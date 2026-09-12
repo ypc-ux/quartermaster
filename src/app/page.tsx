@@ -64,6 +64,7 @@ export default function Home() {
           <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-amber-400 flex items-center justify-center font-bold text-navy text-sm">Q</div><span className="text-lg font-semibold tracking-tight" style={{ fontFamily: "Instrument Serif, serif" }}>Quartermaster</span></div>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-2 text-xs text-slate-400"><span className="w-2 h-2 rounded-full bg-emerald pulse-dot"></span>3 agents running</div>
+            <a href="/whiteboard" className="px-4 py-2 rounded-lg border border-gold/40 text-gold text-sm font-medium hover:bg-gold/10 transition">Whiteboard</a>
             <button onClick={() => setShowLaunch(true)} className="px-4 py-2 rounded-lg bg-gold text-navy font-semibold text-sm hover:bg-gold/90 transition">+ Launch</button>
           </div>
         </div>
