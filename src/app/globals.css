@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0B1426;
+  --color-navy-light: #111d33;
+  --color-navy-dark: #070d1a;
+  --color-gold: #c9a227;
+  --color-gold-light: #d4b43a;
+  --color-gold-dark: #a88720;
+  --color-cyan: #22d3ee;
+  --color-emerald: #10b981;
+  --color-red: #ef4444;
+  --color-purple: #a855f7;
+  --font-family-serif: "Instrument Serif", Georgia, serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-navy text-white antialiased; font-family: system-ui, -apple-system, sans-serif; }
+  ::selection { @apply bg-gold/30 text-white; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.revealed { opacity: 1; transform: translateY(0); }
+  .pulse-dot { animation: pulse-dot 2s infinite; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
