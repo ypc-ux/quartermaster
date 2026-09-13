@@ -50,6 +50,52 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // SerpAPI enrichment: Google Trends for trends agent, Google Search for research fallback
+    const serpApiKey = process.env.SERPAPI_API_KEY;
+    if (serpApiKey && typeof serpApiKey === 'string' && serpApiKey.length > 10) {
+      try {
+        if (agentName === 'trends' && args?.topic) {
+          // Google Trends TIMESERIES
+          const trendsUrl = `https://serpapi.com/search.json?engine=google_trends&q=${encodeURIComponent(args.topic)}&data_type=TIMESERIES&date=today+12-m&api_key=${serpApiKey}`;
+          const trendsRes = await fetch(trendsUrl, { next: { revalidate: 3600 } });
+          if (trendsRes.ok) {
+            const trendsData = await trendsRes.json();
+            const timeline = (trendsData.interest_over_time?.timeline_data || []).slice(-12).map((p: any) => ({
+              date: p.date,
+              value: p.values?.[0]?.extracted_value || 0,
+            }));
+            result.data = {
+              ...result.data,
+              mode: 'live_trends',
+              topic: args.topic,
+              timeline,
+              latest_value: timeline[timeline.length - 1]?.value || 0,
+              peak: Math.max(...timeline.map((t: any) => t.value)),
+            };
+          }
+        } else if (agentName === 'research' && args?.query && !serperKey) {
+          // SerpAPI Google Search as fallback when no Serper key
+          const searchUrl = `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(args.query)}&num=8&api_key=${serpApiKey}`;
+          const searchRes = await fetch(searchUrl, { next: { revalidate: 300 } });
+          if (searchRes.ok) {
+            const searchData = await searchRes.json();
+            result.data = {
+              ...result.data,
+              mode: 'live_search',
+              query: args.query,
+              live_results: (searchData.organic_results || []).map((r: any) => ({
+                title: r.title,
+                url: r.link,
+                snippet: r.snippet,
+              })),
+            };
+          }
+        }
+      } catch {
+        // Keep offline result if SerpAPI fails
+      }
+    }
+
     // Get agent metadata
     const agentSpec = AGENT_REGISTRY[agentName];
 
@@ -94,7 +140,8 @@ export async function GET() {
   return NextResponse.json({
     agents,
     total: agents.length,
-    live_search: !!process.env.SERPER_API_KEY,
+    live_search: !!(process.env.SERPER_API_KEY || process.env.SERPAPI_API_KEY),
+    serpapi: !!process.env.SERPAPI_API_KEY,
     llm: !!(process.env.ANTHROPIC_API_KEY || process.env.OPENAI_API_KEY),
   });
 }
