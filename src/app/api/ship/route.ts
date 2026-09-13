@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getPostHogServer } from '@/lib/posthog-server';
 
 interface FileSpec { path: string; content: string }
 
@@ -120,6 +121,14 @@ export async function POST(req: NextRequest) {
 
     const repoUrl = `https://github.com/${owner}/${repoName}`;
     const pagesUrl = `https://${owner}.github.io/${repoName}`;
+
+    // PostHog: track site shipment (fire-and-forget)
+    const ph = getPostHogServer()
+    ph?.capture({
+      distinctId: 'quarterback-app',
+      event: 'site_shipped',
+      properties: { repo: repoName, owner, repo_url: repoUrl, pages_url: pagesUrl, files: files.length, command },
+    })
 
     return NextResponse.json({
       ok: true,

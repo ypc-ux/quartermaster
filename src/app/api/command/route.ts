@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseCommand, executeAgent, AGENT_REGISTRY } from '@/lib/agents';
 import { humanizeResult } from '@/lib/humanizer';
+import { getPostHogServer } from '@/lib/posthog-server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -134,6 +135,21 @@ export async function POST(req: NextRequest) {
         }).catch(() => {});
       } catch {}
     }
+
+    // PostHog: track command execution (fire-and-forget)
+    const ph = getPostHogServer()
+    ph?.capture({
+      distinctId: 'quarterback-app',
+      event: 'command_executed',
+      properties: {
+        agent: agentName,
+        command,
+        ok: result.ok,
+        took_ms: result.took_ms,
+        category: agentSpec?.category || 'unknown',
+        points: agentSpec?.points || 0,
+      },
+    })
 
     return NextResponse.json({
       success: result.ok,
