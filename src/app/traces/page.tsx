@@ -1,27 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-
-interface Trace {
-  id: string; timestamp: string; agent: string; command: string;
-  humanize_report: { patterns_found: number; fixes: string[] };
-  latency_ms: number; score?: number;
-}
-
-const STORAGE_KEY = "qb_traces";
-
-function getTraces(): Trace[] {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { return []; }
-}
+import { getTraces as getStoreTraces, getTraceStats, clearTraces, type Trace } from "@/lib/trace-store";
 
 export default function TracesPage() {
-  const [traces, setTraces] = useState<Trace[]>(() => getTraces());
+  const [traces, setTraces] = useState<Trace[]>([]);
   const [filter, setFilter] = useState<string>("all");
   const [selected, setSelected] = useState<Trace | null>(null);
+
+  useEffect(() => { setTraces(getStoreTraces()); }, []);
 
   const agents = [...new Set(traces.map(t => t.agent))];
   const filtered = filter === "all" ? traces : traces.filter(t => t.agent === filter);
   const sorted = [...filtered].sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  const hasDemo = traces.some(t => t.tags?.includes("demo"));
+  const allDemo = traces.length > 0 && traces.every(t => t.tags?.includes("demo"));
 
   const avgLatency = traces.length ? Math.round(traces.reduce((s, t) => s + t.latency_ms, 0) / traces.length) : 0;
   const avgHumanize = traces.length ? (traces.reduce((s, t) => s + t.humanize_report.patterns_found, 0) / traces.length).toFixed(1) : "0";
@@ -33,6 +26,7 @@ export default function TracesPage() {
           <Link href="/" className="text-gold text-sm hover:underline">← Home</Link>
           <h1 className="text-lg font-semibold" style={{ fontFamily: "Instrument Serif, serif" }}>Traces</h1>
           <span className="text-xs text-slate-500">{traces.length} executions logged</span>
+          {hasDemo && <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-400 border border-amber-400/20">includes sample data</span>}
           <div className="ml-auto flex gap-2">
             <select value={filter} onChange={e => setFilter(e.target.value)} className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 text-slate-300">
               <option value="all">All agents</option>

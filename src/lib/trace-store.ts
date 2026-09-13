@@ -1,5 +1,6 @@
 // Trace store — localStorage-based agent execution logging.
 // Works offline. Supabase slot ready for when keys are added.
+import { generateDemoTraces } from "./demo-traces";
 
 export interface Trace {
   id: string;
@@ -15,12 +16,20 @@ export interface Trace {
 }
 
 const STORAGE_KEY = "qb_traces";
+const SEED_KEY = "qb_demo_seeded";
 const MAX_TRACES = 500;
 
 function getStore(): Trace[] {
   if (typeof window === "undefined") return [];
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    let traces: Trace[] = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    // Seed demo traces once when store is empty (fresh judge browser)
+    if (traces.length === 0 && !localStorage.getItem(SEED_KEY)) {
+      traces = generateDemoTraces();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(traces));
+      localStorage.setItem(SEED_KEY, "1");
+    }
+    return traces;
   } catch { return []; }
 }
 
