@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     // Apply humanizer to all text outputs
     const humanized = humanizeResult(result.data);
 
-    // Log to digest queue (fire-and-forget — don't block the response)
+    // Log to digest queue (fire-and-forget)
     try {
       const digestUrl = new URL('/api/digest', req.url).toString();
       fetch(digestUrl, {
@@ -116,6 +116,24 @@ export async function POST(req: NextRequest) {
         }),
       }).catch(() => {});
     } catch {}
+
+    // Notify Slack (fire-and-forget, when token is present)
+    if (process.env.SLACK_BOT_TOKEN) {
+      try {
+        const notifyUrl = new URL('/api/notify', req.url).toString();
+        fetch(notifyUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            agent: agentName,
+            command,
+            summary: JSON.stringify(humanized.data).slice(0, 300),
+            points: agentSpec?.points || 0,
+            humanize_patterns: humanized.humanizeReport?.patterns_found || 0,
+          }),
+        }).catch(() => {});
+      } catch {}
+    }
 
     return NextResponse.json({
       success: result.ok,
