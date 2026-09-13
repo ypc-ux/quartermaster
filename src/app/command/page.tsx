@@ -66,7 +66,15 @@ export default function CommandCenter() {
       const res = await fetch("/api/command", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command: command.trim() }) });
       const data = await res.json();
       if (!res.ok || !data.success) setError(data.error || "Command failed");
-      else setResult(data);
+      else {
+        setResult(data);
+        // Log trace
+        try {
+          const traces = JSON.parse(localStorage.getItem("qb_traces") || "[]");
+          traces.push({ id: `t_${Date.now()}_${Math.random().toString(36).slice(2,6)}`, timestamp: new Date().toISOString(), agent: data.agent?.name || "unknown", command: command.trim(), humanize_report: data.humanize || { patterns_found: 0, fixes: [] }, latency_ms: data.took_ms || 0 });
+          localStorage.setItem("qb_traces", JSON.stringify(traces.slice(-500)));
+        } catch {}
+      }
     } catch (e: any) { setError(e.message || "Network error"); }
     finally { setLoading(false); }
   }
@@ -84,6 +92,9 @@ export default function CommandCenter() {
               {version === "green" ? "🟢 GREEN" : "🔵 BLUE"}
             </span>
             <Link href="/whiteboard" className="px-4 py-2 rounded-lg border border-gold/40 text-gold text-sm font-medium hover:bg-gold/10 transition">Whiteboard</Link>
+            <Link href="/skills" className="px-4 py-2 rounded-lg border border-gold/40 text-gold text-sm font-medium hover:bg-gold/10 transition">Skills</Link>
+            <Link href="/eval" className="px-4 py-2 rounded-lg border border-gold/40 text-gold text-sm font-medium hover:bg-gold/10 transition">Eval</Link>
+            <Link href="/traces" className="px-4 py-2 rounded-lg border border-gold/40 text-gold text-sm font-medium hover:bg-gold/10 transition">Traces</Link>
             <Link href="/community" className="px-4 py-2 rounded-lg bg-gold/10 text-gold text-sm font-medium hover:bg-gold/20 transition">Beat My 300 →</Link>
           </div>
         </div>

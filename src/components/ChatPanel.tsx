@@ -37,6 +37,19 @@ export default function ChatPanel({ onResult }: { onResult?: (r: any) => void })
           points: data.agent?.points,
         }]);
         onResult?.(data);
+        // Log trace to localStorage
+        try {
+          const traces = JSON.parse(localStorage.getItem("qb_traces") || "[]");
+          traces.push({
+            id: `t_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
+            timestamp: new Date().toISOString(),
+            agent: data.agent?.name || "unknown",
+            command: text.trim(),
+            humanize_report: data.humanize || { patterns_found: 0, fixes: [] },
+            latency_ms: data.took_ms || 0,
+          });
+          localStorage.setItem("qb_traces", JSON.stringify(traces.slice(-500)));
+        } catch {}
       }
     } catch (e: any) {
       setMessages(prev => [...prev, { role: "agent", content: `Network error: ${e.message}` }]);
