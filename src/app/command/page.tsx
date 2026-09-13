@@ -31,13 +31,25 @@ export default function CommandCenter() {
     const c = (cmd || command).trim();
     if (!c) return;
     setLoading(true); setError(null); setResult(null);
+    const isShip = /ship|deploy site|push site|create repo|create site/i.test(c);
+    const endpoint = isShip ? "/api/ship" : "/api/command";
     try {
-      const res = await fetch("/api/command", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command: c }) });
+      const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command: c }) });
       const data = await res.json();
-      if (!res.ok || !data.success) setError(data.error || "Command failed");
+      if (!res.ok || (data.success === false && data.error)) setError(data.error || "Command failed");
       else {
         setResult(data);
-        showToast(`✓ ${data.agent?.name?.replace(/_/g, " ")} · ${data.agent?.points || 0}pts · humanized ${data.humanize?.patterns_found || 0}`);
+        if (isShip) {
+          showToast(`✓ Repo created → ${data.repo_url} (${data.files_created} files)`);
+          // Also log to command history
+          try {
+            const traces = JSON.parse(localStorage.getItem("qb_traces") || "[]");
+            traces.push({ id: `t_${Date.now()}`, timestamp: new Date().toISOString(), agent: "ship", command: c, humanize_report: { patterns_found: 0, fixes: [] }, latency_ms: 0 });
+            localStorage.setItem("qb_traces", JSON.stringify(traces.slice(-500)));
+          } catch {}
+        } else {
+          showToast(`✓ ${data.agent?.name?.replace(/_/g, " ")} · ${data.agent?.points || 0}pts · humanized ${data.humanize?.patterns_found || 0}`);
+        }
       }
     } catch (e: any) { setError(e.message || "Network error"); }
     finally { setLoading(false); }

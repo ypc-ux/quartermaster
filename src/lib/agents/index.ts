@@ -167,6 +167,12 @@ export function parseCommand(input: string): { agentName: AgentName; args: any }
     return { agentName: "story_sequence", args: { action } };
   }
 
+  // Ship / deploy / push — create a real GitHub repo + push files
+  if (lower.includes("ship") || lower.includes("deploy site") || lower.includes("push site") || lower.includes("create repo") || lower.includes("create site")) {
+    const nameMatch = input.match(/(?:ship|deploy|push|create)\s+(?:a\s+)?(?:repo|site|page|website)?\s*(?:for|called|named|as)?\s*([a-zA-Z0-9_-]+)/i);
+    return { agentName: "site", args: { action: "ship", command: input } };
+  }
+
   // Default fallback
   return { agentName: "commander_frame", args: {} };
 }
