@@ -146,7 +146,9 @@ export function parseCommand(input: string): { agentName: AgentName; args: any }
 
   // Outreach
   if (lower.includes("outreach") || lower.includes("cold email") || lower.includes("campaign") || lower.includes("lever") || lower.includes("prospect")) {
-    return { agentName: "outreach", args: { action: lower.includes("sequence") ? "generate_sequence" : lower.includes("grade") ? "grade_subject" : "select_lever", prospect: { pain_point: args } } };
+    const action = lower.includes("sequence") ? "generate_sequence" : lower.includes("grade") ? "grade_subject" : "select_lever";
+    const painMatch = input.match(/(?:about|for|pain|prospect)\s+(.+)/i);
+    return { agentName: "outreach", args: { action, prospect: { pain_point: painMatch ? painMatch[1] : undefined } } };
   }
 
   // Default fallback
