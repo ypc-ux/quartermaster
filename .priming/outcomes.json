@@ -819,6 +819,415 @@
       "summary": "Overall score: 7.9/10. Good work. Consider addressing the suggestions.",
       "timestamp": 1789294495089,
       "diffHash": "h426ym"
+    },
+    {
+      "overallScore": 8.052631578947368,
+      "heuristicScores": [
+        {
+          "heuristicId": "test_coverage",
+          "heuristicName": "Test Coverage",
+          "family": "correctness",
+          "score": 3,
+          "reasoning": "No tests detected. New functionality needs test coverage.",
+          "suggestions": [
+            "Add unit tests for new functionality"
+          ]
+        },
+        {
+          "heuristicId": "error_handling",
+          "heuristicName": "Error Handling",
+          "family": "correctness",
+          "score": 7,
+          "reasoning": "Async operations detected without error handling.",
+          "suggestions": [
+            "Add try-catch or .catch() for async operations"
+          ]
+        },
+        {
+          "heuristicId": "null_safety",
+          "heuristicName": "Null/Undefined Safety",
+          "family": "correctness",
+          "score": 10,
+          "reasoning": "Null/undefined safety checks are present.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "type_safety",
+          "heuristicName": "Type Safety",
+          "family": "correctness",
+          "score": 10,
+          "reasoning": "Types are used.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "resource_cleanup",
+          "heuristicName": "Resource Cleanup",
+          "family": "correctness",
+          "score": 8,
+          "reasoning": "No resource management detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "input_validation",
+          "heuristicName": "Input Validation",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No user input handling detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "sql_injection",
+          "heuristicName": "SQL Injection Prevention",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No SQL queries detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "xss_prevention",
+          "heuristicName": "XSS Prevention",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No output handling detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "secrets_management",
+          "heuristicName": "Secrets Management",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No secrets management detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "auth_protection",
+          "heuristicName": "Authentication/Authorization",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No endpoints detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "naming_consistency",
+          "heuristicName": "Naming Consistency",
+          "family": "consistency",
+          "score": 10,
+          "reasoning": "Naming conventions match the codebase.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "import_style",
+          "heuristicName": "Import Style",
+          "family": "consistency",
+          "score": 10,
+          "reasoning": "Import style matches the codebase.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "error_pattern",
+          "heuristicName": "Error Handling Pattern",
+          "family": "consistency",
+          "score": 5,
+          "reasoning": "Error handling pattern differs from the codebase.",
+          "suggestions": [
+            "Use the same error handling pattern as the codebase"
+          ]
+        },
+        {
+          "heuristicId": "function_style",
+          "heuristicName": "Function Style",
+          "family": "consistency",
+          "score": 10,
+          "reasoning": "Function style matches the codebase.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "function_size",
+          "heuristicName": "Function Size",
+          "family": "style",
+          "score": 10,
+          "reasoning": "Functions are reasonably sized.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "comment_quality",
+          "heuristicName": "Comment Quality",
+          "family": "style",
+          "score": 6,
+          "reasoning": "No comments detected. Complex code may need documentation.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "magic_numbers",
+          "heuristicName": "Magic Numbers",
+          "family": "style",
+          "score": 4,
+          "reasoning": "Magic numbers detected. Use named constants for clarity.",
+          "suggestions": [
+            "Extract magic numbers to named constants"
+          ]
+        },
+        {
+          "heuristicId": "console_statements",
+          "heuristicName": "Console Statements",
+          "family": "style",
+          "score": 10,
+          "reasoning": "No console statements detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "dead_code",
+          "heuristicName": "Dead Code",
+          "family": "style",
+          "score": 10,
+          "reasoning": "No dead code detected.",
+          "suggestions": []
+        }
+      ],
+      "gates": [
+        {
+          "gateId": "test_toast",
+          "gateName": "Test Toast",
+          "passed": true,
+          "score": 7.6,
+          "blockingIssues": [
+            "Test Coverage: No tests detected. New functionality needs test coverage."
+          ]
+        },
+        {
+          "gateId": "security",
+          "gateName": "Security",
+          "passed": true,
+          "score": 8,
+          "blockingIssues": []
+        },
+        {
+          "gateId": "consistency",
+          "gateName": "Consistency",
+          "passed": true,
+          "score": 8.75,
+          "blockingIssues": []
+        },
+        {
+          "gateId": "style",
+          "gateName": "Style",
+          "passed": true,
+          "score": 8,
+          "blockingIssues": []
+        }
+      ],
+      "slopDetections": [],
+      "summary": "Overall score: 8.1/10. Excellent work. This diff is ready to merge.",
+      "timestamp": 1789311680467,
+      "diffHash": "p3l3y2"
+    },
+    {
+      "overallScore": 7.421052631578948,
+      "heuristicScores": [
+        {
+          "heuristicId": "test_coverage",
+          "heuristicName": "Test Coverage",
+          "family": "correctness",
+          "score": 3,
+          "reasoning": "No tests detected. New functionality needs test coverage.",
+          "suggestions": [
+            "Add unit tests for new functionality"
+          ]
+        },
+        {
+          "heuristicId": "error_handling",
+          "heuristicName": "Error Handling",
+          "family": "correctness",
+          "score": 7,
+          "reasoning": "Async operations detected without error handling.",
+          "suggestions": [
+            "Add try-catch or .catch() for async operations"
+          ]
+        },
+        {
+          "heuristicId": "null_safety",
+          "heuristicName": "Null/Undefined Safety",
+          "family": "correctness",
+          "score": 5,
+          "reasoning": "Object access detected without null checks.",
+          "suggestions": [
+            "Add null checks or optional chaining (?.)"
+          ]
+        },
+        {
+          "heuristicId": "type_safety",
+          "heuristicName": "Type Safety",
+          "family": "correctness",
+          "score": 10,
+          "reasoning": "Types are used.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "resource_cleanup",
+          "heuristicName": "Resource Cleanup",
+          "family": "correctness",
+          "score": 8,
+          "reasoning": "No resource management detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "input_validation",
+          "heuristicName": "Input Validation",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No user input handling detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "sql_injection",
+          "heuristicName": "SQL Injection Prevention",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No SQL queries detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "xss_prevention",
+          "heuristicName": "XSS Prevention",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No output handling detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "secrets_management",
+          "heuristicName": "Secrets Management",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No secrets management detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "auth_protection",
+          "heuristicName": "Authentication/Authorization",
+          "family": "security",
+          "score": 8,
+          "reasoning": "No endpoints detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "naming_consistency",
+          "heuristicName": "Naming Consistency",
+          "family": "consistency",
+          "score": 5,
+          "reasoning": "Naming conventions differ from the codebase.",
+          "suggestions": [
+            "Match the naming conventions used in the codebase"
+          ]
+        },
+        {
+          "heuristicId": "import_style",
+          "heuristicName": "Import Style",
+          "family": "consistency",
+          "score": 5,
+          "reasoning": "Import style differs from the codebase.",
+          "suggestions": [
+            "Use the same import style as the codebase"
+          ]
+        },
+        {
+          "heuristicId": "error_pattern",
+          "heuristicName": "Error Handling Pattern",
+          "family": "consistency",
+          "score": 5,
+          "reasoning": "Error handling pattern differs from the codebase.",
+          "suggestions": [
+            "Use the same error handling pattern as the codebase"
+          ]
+        },
+        {
+          "heuristicId": "function_style",
+          "heuristicName": "Function Style",
+          "family": "consistency",
+          "score": 5,
+          "reasoning": "Function style differs from the codebase.",
+          "suggestions": [
+            "Use the same function style as the codebase"
+          ]
+        },
+        {
+          "heuristicId": "function_size",
+          "heuristicName": "Function Size",
+          "family": "style",
+          "score": 10,
+          "reasoning": "Functions are reasonably sized.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "comment_quality",
+          "heuristicName": "Comment Quality",
+          "family": "style",
+          "score": 10,
+          "reasoning": "Comments are meaningful and well-formatted.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "magic_numbers",
+          "heuristicName": "Magic Numbers",
+          "family": "style",
+          "score": 8,
+          "reasoning": "Magic numbers are avoided or properly named.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "console_statements",
+          "heuristicName": "Console Statements",
+          "family": "style",
+          "score": 10,
+          "reasoning": "No console statements detected.",
+          "suggestions": []
+        },
+        {
+          "heuristicId": "dead_code",
+          "heuristicName": "Dead Code",
+          "family": "style",
+          "score": 10,
+          "reasoning": "No dead code detected.",
+          "suggestions": []
+        }
+      ],
+      "gates": [
+        {
+          "gateId": "test_toast",
+          "gateName": "Test Toast",
+          "passed": true,
+          "score": 6.6,
+          "blockingIssues": [
+            "Test Coverage: No tests detected. New functionality needs test coverage.",
+            "Null/Undefined Safety: Object access detected without null checks."
+          ]
+        },
+        {
+          "gateId": "security",
+          "gateName": "Security",
+          "passed": true,
+          "score": 8,
+          "blockingIssues": []
+        },
+        {
+          "gateId": "consistency",
+          "gateName": "Consistency",
+          "passed": true,
+          "score": 5,
+          "blockingIssues": []
+        },
+        {
+          "gateId": "style",
+          "gateName": "Style",
+          "passed": true,
+          "score": 9.6,
+          "blockingIssues": []
+        }
+      ],
+      "slopDetections": [],
+      "summary": "Overall score: 7.4/10. Good work. Consider addressing the suggestions.",
+      "timestamp": 1789311680554,
+      "diffHash": "5ml2pm"
     }
   ]
 }
