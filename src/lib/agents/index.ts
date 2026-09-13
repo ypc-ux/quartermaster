@@ -3,6 +3,7 @@
 import { commanderFrame, brainwashOS, research, trends, launch } from "./strategy";
 import { hooks, repurpose, content, twitter, batch, bio, grid } from "./content";
 import { digest, analytics, finance, collab, community, reset } from "./ops";
+import { site } from "./site";
 
 export type AgentResult = {
   ok: boolean;
@@ -14,7 +15,8 @@ export type AgentResult = {
 export type AgentName =
   | "commander_frame" | "brainwash_os" | "research" | "trends" | "launch"
   | "hooks" | "repurpose" | "content" | "twitter" | "batch" | "bio" | "grid"
-  | "digest" | "analytics" | "finance" | "collab" | "community" | "reset";
+  | "digest" | "analytics" | "finance" | "collab" | "community" | "reset"
+  | "site";
 
 export type AgentCategory = "strategy" | "content" | "operations";
 
@@ -51,6 +53,7 @@ export const AGENT_REGISTRY: Record<AgentName, AgentSpec> = {
   collab: spec("collab", "operations", "Collaboration and partnership tracking", 10, collab),
   community: spec("community", "operations", "Community engagement metrics", 10, community),
   reset: spec("reset", "operations", "Weekly review and planning", 5, reset),
+  site: spec("site", "content", "One-pager marketing site generator", 15, site),
 };
 // Parse natural language command to agent + args
 export function parseCommand(input: string): { agentName: AgentName; args: any } {
@@ -131,6 +134,12 @@ export function parseCommand(input: string): { agentName: AgentName; args: any }
   }
   if (lower.includes("reset") || lower.includes("weekly") || lower.includes("review")) {
     return { agentName: "reset", args: {} };
+  }
+
+  // Site builder
+  if (lower.includes("site") || lower.includes("landing") || lower.includes("website") || lower.includes("one-pager") || lower.includes("onepager")) {
+    const productMatch = input.match(/(?:site|landing|website|one-pager)\s+(.+)/i);
+    return { agentName: "site", args: { product: productMatch ? productMatch[1] : undefined } };
   }
 
   // Default fallback

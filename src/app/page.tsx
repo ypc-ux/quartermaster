@@ -1,163 +1,197 @@
 "use client";
-import { useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
-const AGENTS = [
-  { id: "research", name: "Research", status: "idle", lastRun: "2h ago", tasks: 3 },
-  { id: "positioning", name: "Positioning", status: "idle", lastRun: "1h ago", tasks: 1 },
-  { id: "content", name: "Content", status: "running", lastRun: "Now", tasks: 7 },
-  { id: "twitter", name: "Twitter", status: "running", lastRun: "Now", tasks: 24 },
-  { id: "email", name: "Email", status: "idle", lastRun: "30m ago", tasks: 5 },
-  { id: "building", name: "Building", status: "idle", lastRun: "4h ago", tasks: 2 },
-  { id: "sales", name: "Sales", status: "idle", lastRun: "15m ago", tasks: 0 },
-  { id: "analytics", name: "Analytics", status: "running", lastRun: "Now", tasks: 1 },
-  { id: "ops", name: "Ops", status: "idle", lastRun: "6h ago", tasks: 4 },
-  { id: "culture", name: "Culture", status: "idle", lastRun: "1d ago", tasks: 0 },
-];
+const fadeUp = { hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } };
+const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
+const GROUP_COLORS: Record<string, string> = { strategy: "#a855f7", content: "#10b981", ops: "#22d3ee" };
 
-const PROJECTS = [
-  { name: "Agency OS", repo: "agency-os", status: "deployed", url: "agency-os.vercel.app", agents: ["content", "building", "sales"] },
-  { name: "Priming for Code", repo: "priming-for-code", status: "deployed", url: "GitHub", agents: ["building", "content"] },
-  { name: "PayScope", repo: "payscope", status: "deployed", url: "payscope-kappa.vercel.app", agents: ["building", "analytics"] },
-  { name: "Switchboard", repo: "switchboard", status: "deployed", url: "Live", agents: ["sales", "ops"] },
-  { name: "Social-Ops", repo: "social-ops", status: "active", url: "GitHub", agents: ["content", "twitter"] },
-  { name: "Commander Frame", repo: "—", status: "in-dev", url: "Q4 2026", agents: ["positioning", "content"] },
-  { name: "Brainwash OS", repo: "—", status: "in-dev", url: "Q4 2026", agents: ["culture", "content"] },
-  { name: "Quartermaster", repo: "quartermaster", status: "building", url: "Local", agents: ["all"] },
-];
-
-function StatusDot({ status }: { status: string }) {
-  const c: Record<string, string> = { running: "bg-emerald", idle: "bg-slate-500", error: "bg-red" };
-  return <span className={`w-2 h-2 rounded-full inline-block ${c[status] || "bg-slate-500"} ${status === "running" ? "pulse-dot" : ""}`} />;
-}
-
-function AgentCard({ agent }: { agent: typeof AGENTS[0] }) {
+export default function LandingPage() {
   return (
-    <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4 hover:border-white/10 transition-all">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2"><StatusDot status={agent.status} /><span className="text-sm font-medium text-white">{agent.name}</span></div>
-        <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full ${agent.status === "running" ? "bg-emerald/10 text-emerald" : "bg-white/5 text-slate-500"}`}>{agent.status}</span>
-      </div>
-      <div className="flex items-center justify-between text-xs text-slate-500"><span>Last: {agent.lastRun}</span><span>{agent.tasks} tasks</span></div>
-    </div>
-  );
-}
+    <main className="min-h-screen bg-navy text-white overflow-x-hidden">
+      {/* HERO */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6">
+        <div className="absolute inset-0 bg-gradient-to-b from-gold/5 via-transparent to-transparent pointer-events-none" />
+        <motion.div initial="hidden" animate="visible" variants={stagger} className="relative z-10 max-w-4xl mx-auto space-y-6">
+          <motion.p variants={fadeUp} className="text-gold text-xs uppercase tracking-[0.3em]">Agent Data Sync Presents</motion.p>
+          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-light leading-[0.95]" style={{ fontFamily: "Instrument Serif, serif" }}>
+            Stop wearing every hat.<br /><em className="text-gold not-italic">Start running your business.</em>
+          </motion.h1>
+          <motion.p variants={fadeUp} className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
+            The operating system that runs your agency without you. 19 connected agents. One command center. Zero shelf-ware.
+          </motion.p>
+          <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <Link href="/command" className="px-8 py-3.5 rounded-xl bg-gold text-navy font-semibold hover:bg-gold/90 transition text-lg">Enter the Command Center</Link>
+            <a href="#arsenal" className="px-8 py-3.5 rounded-xl border border-gold/40 text-gold font-medium hover:bg-gold/10 transition text-lg">See the Arsenal ↓</a>
+          </motion.div>
+        </motion.div>
+        <div className="absolute bottom-8 animate-bounce text-gold/50 text-2xl">↓</div>
+      </section>
 
-function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
-  const sc: Record<string, string> = { deployed: "text-emerald border-emerald/20", active: "text-blue-400 border-blue-400/20", "in-dev": "text-gold border-gold/20", building: "text-purple border-purple/20" };
-  return (
-    <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4 hover:border-white/10 transition-all">
-      <div className="flex items-center justify-between mb-2"><span className="text-sm font-semibold text-white">{project.name}</span><span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border ${sc[project.status]}`}>{project.status}</span></div>
-      <p className="text-xs text-slate-500 mb-3">{project.url}</p>
-      <div className="flex gap-1 flex-wrap">{project.agents.map(a => <span key={a} className="text-[10px] bg-white/5 text-slate-400 px-2 py-0.5 rounded-full">{a}</span>)}</div>
-    </div>
-  );
-}
-
-
-export default function Home() {
-  const [command, setCommand] = useState("");
-  const [showLaunch, setShowLaunch] = useState(false);
-  const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleExecute() {
-    if (!command.trim()) return;
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    try {
-      const res = await fetch("/api/command", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ command: command.trim() }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        setError(data.error || "Command failed");
-      } else {
-        setResult(data);
-      }
-    } catch (e: any) {
-      setError(e.message || "Network error");
-    } finally {
-      setLoading(false);
-    }
-  }
-  return (
-    <main className="min-h-screen bg-navy text-white">
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-navy/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-amber-400 flex items-center justify-center font-bold text-navy text-sm">Q</div><span className="text-lg font-semibold tracking-tight" style={{ fontFamily: "Instrument Serif, serif" }}>Quartermaster</span></div>
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 text-xs text-slate-400"><span className="w-2 h-2 rounded-full bg-emerald pulse-dot"></span>3 agents running</div>
-            <a href="/whiteboard" className="px-4 py-2 rounded-lg border border-gold/40 text-gold text-sm font-medium hover:bg-gold/10 transition">Whiteboard</a>
-            <a href="/community" className="px-4 py-2 rounded-lg bg-gold/10 text-gold text-sm font-medium hover:bg-gold/20 transition">Beat My 300 →</a>
-            <button onClick={() => setShowLaunch(true)} className="px-4 py-2 rounded-lg bg-gold text-navy font-semibold text-sm hover:bg-gold/90 transition">+ Launch</button>
-          </div>
-        </div>
-      </header>
-      <div className="max-w-7xl mx-auto p-6 space-y-8">
-        <section className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-          <div className="flex gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-amber-400 flex items-center justify-center shrink-0"><span className="text-navy font-bold text-lg">Q</span></div>
-            <input type="text" value={command} onChange={(e) => setCommand(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleExecute()} placeholder="research agency OS competitors, launch Quartermaster, 10 hooks, write newsletter..." className="flex-1 bg-transparent border-none text-white placeholder:text-slate-600 text-lg focus:outline-none" />
-            <button onClick={handleExecute} disabled={loading || !command.trim()} className="px-6 py-3 rounded-lg bg-gold text-navy font-semibold hover:bg-gold/90 disabled:opacity-50 disabled:cursor-not-allowed transition">{loading ? "Running..." : "Execute"}</button>
-          </div>
-          {(result || error) && (
-            <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-              {error ? (
-                <div className="flex items-center gap-2 text-red-400">
-                  <StatusDot status="error" />
-                  <p className="text-sm">{error}</p>
-                </div>
-              ) : result ? (
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <StatusDot status="running" />
-                      <span className="text-sm font-semibold text-white">{result.agent?.name?.replace(/_/g, " ")}</span>
-                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-emerald/10 text-emerald">complete</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-slate-500">
-                      <span className="px-2 py-0.5 rounded-full bg-gold/10 text-gold">{result.agent?.points} pts</span>
-                      <span>{result.took_ms}ms</span>
-                      <button onClick={() => setResult(null)} className="text-slate-500 hover:text-white">×</button>
-                    </div>
-                  </div>
-                  <pre className="text-xs text-slate-300 bg-navy-dark/50 rounded-lg p-4 overflow-auto max-h-96 font-mono whitespace-pre-wrap">{JSON.stringify(result.data, null, 2)}</pre>
-                </div>
-              ) : null}
-            </div>
-          )}
-        </section>
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[{ l: "Active Agents", v: "10", s: "3 running" },{ l: "Projects", v: "8", s: "3 deployed" },{ l: "Twitter", v: "14.2K", s: "18 tweets today" },{ l: "Engagement", v: "4.2%", s: 'Top: "Your AI code..."' }].map((st, i) => (
-            <div key={i} className="rounded-xl border border-white/5 bg-white/[0.02] p-5"><p className="text-xs text-slate-500 uppercase tracking-wider mb-1">{st.l}</p><p className="text-2xl font-semibold text-white" style={{ fontFamily: "Instrument Serif, serif" }}>{st.v}</p><p className="text-xs text-slate-400 mt-1">{st.s}</p></div>
-          ))}
-        </section>
-        <section><h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Agent Force</h2><div className="grid grid-cols-2 md:grid-cols-5 gap-3">{AGENTS.map(a => <AgentCard key={a.id} agent={a} />)}</div></section>
-        <section><h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Projects & Repos</h2><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">{PROJECTS.map(p => <ProjectCard key={p.name} project={p} />)}</div></section>
-        <section className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Active Tasks</h2>
-          <div className="space-y-3">
-            {[{ ag: "Content", t: "Draft Twitter thread: 'How I built an agency that runs itself'", st: "running", e: "2m" },{ ag: "Twitter", t: "Schedule 20 tweets from content queue", st: "running", e: "5m" },{ ag: "Research", t: "Competitor scan: agency OS competitors", st: "running", e: "12m" },{ ag: "Building", t: "Deploy Agency OS v2 with Stripe checkout", st: "queued", e: "—" }].map((task, i) => (
-              <div key={i} className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/[0.02]"><StatusDot status={task.st === "running" ? "running" : "idle"} /><div className="flex-1 min-w-0"><p className="text-sm text-white truncate">{task.t}</p><p className="text-xs text-slate-500">{task.ag} agent</p></div><span className="text-xs text-slate-500">{task.e}</span></div>
+      {/* PROBLEM */}
+      <section className="py-28 px-6">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-3xl mx-auto space-y-8">
+          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>
+            You built the agency. <em className="text-gold not-italic">Now it runs you.</em>
+          </motion.h2>
+          <motion.ul variants={stagger} className="space-y-4">
+            {["You do sales, ops, content, finance, analytics — solo.", "Every new client means more hats, not more systems.", "Your competitors are shipping 3x faster with half the team.", "You don't need another tool. You need an operating system."].map((b, i) => (
+              <motion.li key={i} variants={fadeUp} className="flex gap-3 text-slate-300 text-lg"><span className="text-gold shrink-0 mt-1">→</span><span>{b}</span></motion.li>
             ))}
+          </motion.ul>
+        </motion.div>
+      </section>
+{/* SOLUTION */}
+      <section className="py-28 px-6 bg-white/[0.01]">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-5xl mx-auto space-y-12">
+          <div className="text-center space-y-4">
+            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>One command. Every agent executes.</motion.h2>
+            <motion.p variants={fadeUp} className="text-slate-300 text-lg max-w-2xl mx-auto">QuarterBack runs 19 connected agents from a single command center. Research, content, launches, analytics, finance — all wired together.</motion.p>
           </div>
-        </section>
-      </div>
-      {showLaunch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/80 backdrop-blur-sm p-6">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-navy-light p-8">
-            <h2 className="text-2xl font-light mb-2" style={{ fontFamily: "Instrument Serif, serif" }}>Launch New Project</h2>
-            <p className="text-sm text-slate-400 mb-6">Describe what you want to build. The agent force will handle the rest.</p>
-            <textarea className="w-full h-32 bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-gold/50 resize-none mb-4" placeholder="I want to build a $299 agency operating system..." />
-            <div className="flex gap-3"><button className="flex-1 py-3 rounded-lg bg-gold text-navy font-semibold hover:bg-gold/90 transition">Launch</button><button onClick={() => setShowLaunch(false)} className="px-6 py-3 rounded-lg border border-white/10 text-white font-medium hover:bg-white/5 transition">Cancel</button></div>
+          <motion.div variants={stagger} className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { icon: "⚡", title: "Command Center", desc: "Type what you want built. Agents execute." },
+              { icon: "🎯", title: "Stunt Protocol", desc: "5-step PR engine: finds, generates, logs, pitches." },
+              { icon: "📊", title: "Ops Digest", desc: "One morning read. Everything that happened overnight." },
+              { icon: "💡", title: "Content Engine", desc: "1 idea → 6 platforms. Hooks, threads, blogs — auto." },
+            ].map((f, i) => (
+              <motion.div key={i} variants={fadeUp} className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 hover:border-gold/20 transition">
+                <div className="text-3xl mb-3">{f.icon}</div>
+                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
+                <p className="text-sm text-slate-400">{f.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ARSENAL */}
+      <section id="arsenal" className="py-28 px-6">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={stagger} className="max-w-6xl mx-auto space-y-10">
+          <div className="text-center space-y-3">
+            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>The Agent Arsenal</motion.h2>
+            <motion.p variants={fadeUp} className="text-slate-300 text-lg">19 connected agents. 315 challenge points. Zero shelf-ware.</motion.p>
           </div>
+          <motion.div variants={stagger} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {[
+              { name: "Stunt Protocol", pts: 70, group: "strategy", desc: "5-step PR engine" },
+              { name: "Commander Frame", pts: 15, group: "strategy", desc: "6-stage diagnostic" },
+              { name: "Brainwash OS", pts: 15, group: "strategy", desc: "7-layer culture" },
+              { name: "Research", pts: 15, group: "strategy", desc: "Market scans" },
+              { name: "Trend Adapter", pts: 10, group: "strategy", desc: "Trends → brand" },
+              { name: "Launch Mode", pts: 15, group: "strategy", desc: "7-day plans" },
+              { name: "Twitter Agent", pts: 15, group: "content", desc: "10-50 tweets/day" },
+              { name: "Content Engine", pts: 15, group: "content", desc: "All channels" },
+              { name: "Brand Vault", pts: 15, group: "content", desc: "1 → 6 platforms" },
+              { name: "Hook Workroom", pts: 10, group: "content", desc: "20+ hooks" },
+              { name: "Batch Planner", pts: 10, group: "content", desc: "Batch days" },
+              { name: "Bio Optimizer", pts: 5, group: "content", desc: "Optimize bios" },
+              { name: "Grid Preview", pts: 5, group: "content", desc: "IG grid" },
+              { name: "Ops Digest", pts: 10, group: "ops", desc: "Daily briefing" },
+              { name: "Analytics", pts: 15, group: "ops", desc: "KPI tracking" },
+              { name: "Finance", pts: 10, group: "ops", desc: "Revenue/expenses" },
+              { name: "Collab Tracker", pts: 10, group: "ops", desc: "Partnerships" },
+              { name: "Community", pts: 10, group: "ops", desc: "Engagement" },
+              { name: "Sunday Reset", pts: 5, group: "ops", desc: "Weekly review" },
+            ].map((a, i) => (
+              <motion.div key={i} variants={fadeUp} className="rounded-xl border border-white/5 bg-white/[0.02] p-3 hover:border-gold/20 transition group">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="w-2 h-2 rounded-full" style={{ background: GROUP_COLORS[a.group] }} />
+                  <span className="text-sm font-medium text-white truncate">{a.name}</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mb-1">{a.desc}</p>
+                <span className="text-[10px] font-mono text-gold">{a.pts} pts</span>
+              </motion.div>
+            ))}
+          </motion.div>
+          <div className="text-center"><span className="inline-block px-6 py-2 rounded-full border border-gold/30 bg-gold/10 text-gold font-mono text-sm">Total: 315 points</span></div>
+        </motion.div>
+      </section>
+{/* BTS */}
+      <section className="py-28 px-6 bg-white/[0.01]">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-5xl mx-auto space-y-12">
+          <div className="text-center space-y-3">
+            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>The Marketing That Sells It</motion.h2>
+            <motion.p variants={fadeUp} className="text-slate-300 text-lg">Every move is public. The strategy, the stunts, the receipts.</motion.p>
+          </div>
+          <motion.div variants={stagger} className="grid md:grid-cols-4 gap-5">
+            {[
+              { step: "1", title: "Score", desc: "Paste any repo → instant rubric breakdown." },
+              { step: "2", title: "Stunt", desc: "40 campaign shapes → 20 ideas → artifacts." },
+              { step: "3", title: "Stack", desc: "Build connected agents. Each scores points." },
+              { step: "4", title: "Ship", desc: "Post the demo. Let the tool do the talking." },
+            ].map((s, i) => (
+              <motion.div key={i} variants={fadeUp} className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center">
+                <div className="text-2xl font-light text-gold mb-2" style={{ fontFamily: "Instrument Serif, serif" }}>{s.step}</div>
+                <h3 className="text-lg font-semibold mb-2">{s.title}</h3>
+                <p className="text-sm text-slate-400">{s.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+          <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+            {[
+              { label: "Repos Scored", value: "42" },
+              { label: "Testimonials", value: "3" },
+              { label: "Repos Visualized", value: "87" },
+              { label: "Challenge Points", value: "315" },
+            ].map((k, i) => (
+              <motion.div key={i} variants={fadeUp} className="rounded-xl border border-white/5 bg-white/[0.02] p-4 text-center">
+                <p className="text-2xl font-semibold text-gold" style={{ fontFamily: "Instrument Serif, serif" }}>{k.value}</p>
+                <p className="text-xs text-slate-500 uppercase tracking-wider mt-1">{k.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+{/* PRICING */}
+      <section className="py-28 px-6">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-5xl mx-auto space-y-12">
+          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light text-center" style={{ fontFamily: "Instrument Serif, serif" }}>Choose your operating system</motion.h2>
+          <motion.div variants={stagger} className="grid md:grid-cols-3 gap-5">
+            {[
+              { name: "Solo", price: "$99", period: "/mo", features: ["1 user", "All 19 agents", "Command Center", "Whiteboard", "Ops Digest"], featured: false },
+              { name: "Agency", price: "$299", period: "/mo", features: ["5 users", "Everything in Solo", "Client dashboards", "Brand Vault", "Launch Mode"], featured: true },
+              { name: "Studio", price: "$999", period: "/mo", features: ["Unlimited users", "Everything in Agency", "White-label", "Priority support", "Custom agents"], featured: false },
+            ].map((tier, i) => (
+              <motion.div key={i} variants={fadeUp} className={`rounded-2xl border p-6 ${tier.featured ? "border-gold/50 bg-gold/5 ring-1 ring-gold/20" : "border-white/5 bg-white/[0.02]"}`}>
+                {tier.featured && <div className="text-xs text-gold uppercase tracking-wider mb-3 font-medium">Most popular</div>}
+                <h3 className="text-xl font-semibold mb-1">{tier.name}</h3>
+                <div className="flex items-baseline gap-1 mb-5">
+                  <span className="text-4xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>{tier.price}</span>
+                  <span className="text-slate-500 text-sm">{tier.period}</span>
+                </div>
+                <ul className="space-y-2.5 mb-6">
+                  {tier.features.map((f, j) => <li key={j} className="flex gap-2 text-sm text-slate-300"><span className="text-gold">✓</span>{f}</li>)}
+                </ul>
+                <button className={`w-full py-3 rounded-xl font-semibold transition ${tier.featured ? "bg-gold text-navy hover:bg-gold/90" : "border border-gold/40 text-gold hover:bg-gold/10"}`}>Start {tier.name}</button>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+{/* FINAL CTA */}
+      <section className="py-28 px-6 text-center">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-3xl mx-auto space-y-6">
+          <motion.h2 variants={fadeUp} className="text-5xl md:text-6xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>
+            Your agency should run <em className="text-gold not-italic">without you.</em>
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-slate-300 text-lg">Type one command. Watch 19 agents execute.</motion.p>
+          <motion.div variants={fadeUp}>
+            <Link href="/command" className="inline-block px-10 py-4 rounded-xl bg-gold text-navy font-semibold text-lg hover:bg-gold/90 transition">Enter the Command Center →</Link>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-white/5 py-8 px-6 text-center text-xs text-slate-500 space-y-2">
+        <p>QuarterBack by Agent Data Sync</p>
+        <div className="flex items-center justify-center gap-4">
+          <a href="https://github.com/ypc-ux/quartermaster" className="hover:text-gold transition">GitHub</a>
+          <a href="/community" className="hover:text-gold transition">Community</a>
+          <a href="/whiteboard" className="hover:text-gold transition">Whiteboard</a>
+          <a href="/command" className="hover:text-gold transition">Command Center</a>
         </div>
-      )}
+      </footer>
     </main>
   );
 }
-
