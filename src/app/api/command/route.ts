@@ -102,6 +102,21 @@ export async function POST(req: NextRequest) {
     // Apply humanizer to all text outputs
     const humanized = humanizeResult(result.data);
 
+    // Log to digest queue (fire-and-forget — don't block the response)
+    try {
+      const digestUrl = new URL('/api/digest', req.url).toString();
+      fetch(digestUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          agent: agentName,
+          command,
+          summary: JSON.stringify(humanized.data).slice(0, 200),
+          points: agentSpec?.points || 0,
+        }),
+      }).catch(() => {});
+    } catch {}
+
     return NextResponse.json({
       success: result.ok,
       agent: {
