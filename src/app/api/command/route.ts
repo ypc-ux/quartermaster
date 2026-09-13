@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseCommand, executeAgent, AGENT_REGISTRY } from '@/lib/agents';
+import { humanizeResult } from '@/lib/humanizer';
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,6 +53,9 @@ export async function POST(req: NextRequest) {
     // Get agent metadata
     const agentSpec = AGENT_REGISTRY[agentName];
 
+    // Apply humanizer to all text outputs
+    const humanized = humanizeResult(result.data);
+
     return NextResponse.json({
       success: result.ok,
       agent: {
@@ -62,8 +66,9 @@ export async function POST(req: NextRequest) {
       },
       command,
       args,
-      data: result.data,
+      data: humanized.data,
       took_ms: result.took_ms,
+      humanize: humanized.humanizeReport,
     });
   } catch (err) {
     console.error('Command execution error:', err);

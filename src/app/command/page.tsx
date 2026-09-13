@@ -1,6 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const ChatPanel = dynamic(() => import("@/components/ChatPanel"), { ssr: false });
 
 const PROJECTS = [
   { name: "Agency OS", repo: "agency-os", status: "deployed", url: "agency-os.vercel.app", agents: ["content", "building"] },
@@ -53,6 +56,8 @@ export default function CommandCenter() {
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tab, setTab] = useState<"execute" | "chat">("execute");
+  const [version] = useState(() => typeof window !== "undefined" && window.location.hostname.includes("green") ? "green" : "blue");
 
   async function handleExecute() {
     if (!command.trim()) return;
@@ -75,6 +80,9 @@ export default function CommandCenter() {
             <span className="text-lg font-semibold tracking-tight" style={{ fontFamily: "Instrument Serif, serif" }}>QuarterBack</span>
           </Link>
           <div className="flex items-center gap-4">
+            <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${version === "green" ? "bg-emerald/15 text-emerald border border-emerald/30" : "bg-blue-400/15 text-blue-400 border border-blue-400/30"}`}>
+              {version === "green" ? "🟢 GREEN" : "🔵 BLUE"}
+            </span>
             <Link href="/whiteboard" className="px-4 py-2 rounded-lg border border-gold/40 text-gold text-sm font-medium hover:bg-gold/10 transition">Whiteboard</Link>
             <Link href="/community" className="px-4 py-2 rounded-lg bg-gold/10 text-gold text-sm font-medium hover:bg-gold/20 transition">Beat My 300 →</Link>
           </div>
@@ -82,6 +90,14 @@ export default function CommandCenter() {
       </header>
 
       <div className="max-w-7xl mx-auto p-6 space-y-8">
+        {/* Tab toggle */}
+        <div className="flex items-center gap-1 mb-2">
+          <button onClick={() => setTab("execute")} className={`px-4 py-1.5 rounded-lg text-xs font-medium transition ${tab === "execute" ? "bg-gold/15 text-gold border border-gold/30" : "text-slate-400 border border-transparent hover:text-white"}`}>Execute</button>
+          <button onClick={() => setTab("chat")} className={`px-4 py-1.5 rounded-lg text-xs font-medium transition ${tab === "chat" ? "bg-gold/15 text-gold border border-gold/30" : "text-slate-400 border border-transparent hover:text-white"}`}>Chat</button>
+          <span className="ml-auto text-[10px] text-slate-500">{version === "green" ? "iteration build" : "customer stable"}</span>
+        </div>
+
+        {tab === "execute" ? (
         <section className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
           <div className="flex gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-amber-400 flex items-center justify-center shrink-0"><span className="text-navy font-bold text-lg">Q</span></div>
@@ -112,6 +128,11 @@ export default function CommandCenter() {
             </div>
           )}
         </section>
+        ) : (
+          <div className="h-[600px] rounded-2xl border border-white/5 bg-white/[0.02]">
+            <ChatPanel onResult={(r) => setResult(r)} />
+          </div>
+        )}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ l: "Active Agents", v: String(agents.length || 19), s: `${agents.filter(a => a.status === "running").length || 3} running` },{ l: "Projects", v: "8", s: "3 deployed" },{ l: "Instagram", v: "14.8K", s: "followers" },{ l: "Challenge Points", v: "315", s: "19 agents stacked" }].map((st, i) => (
             <div key={i} className="rounded-xl border border-white/5 bg-white/[0.02] p-5"><p className="text-xs text-slate-500 uppercase tracking-wider mb-1">{st.l}</p><p className="text-2xl font-semibold text-white" style={{ fontFamily: "Instrument Serif, serif" }}>{st.v}</p><p className="text-xs text-slate-400 mt-1">{st.s}</p></div>
