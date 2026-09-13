@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 const AppHeader = dynamic(() => import("@/components/AppHeader"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/ChatPanel"), { ssr: false });
 const CommandPalette = dynamic(() => import("@/components/CommandPalette"), { ssr: false });
+const ResultRenderer = dynamic(() => import("@/components/ResultRenderer"), { ssr: false });
 
 const QUICK_COMMANDS = [
   "build my website", "10 hooks", "launch QuarterBack", "carousel ad",
@@ -96,11 +97,11 @@ export default function CommandCenter() {
                     <div className="flex items-center gap-3 text-xs text-slate-500">
                       <span className="px-2 py-0.5 rounded-full bg-gold/10 text-gold">{result.agent?.points} pts</span>
                       <span>{result.took_ms}ms</span>
-                      <button onClick={() => { navigator.clipboard.writeText(JSON.stringify(result.data, null, 2)); }} className="text-slate-500 hover:text-gold transition text-xs" title="Copy output">📋</button>
+                      <button onClick={() => { navigator.clipboard.writeText(JSON.stringify(result.data, null, 2)); }} className="text-slate-500 hover:text-gold transition text-xs" title="Copy all">📋 Copy raw</button>
                       <button onClick={() => setResult(null)} className="text-slate-500 hover:text-white">×</button>
                     </div>
                   </div>
-                  <pre className="text-xs text-slate-300 bg-navy-dark/50 rounded-lg p-4 overflow-auto max-h-96 font-mono whitespace-pre-wrap">{JSON.stringify(result.data, null, 2)}</pre>
+                  <div className="mt-2"><ResultRenderer data={result.data} agent={result.agent?.name || ""} /></div>
                 </div>
               ) : null}
             </div>
