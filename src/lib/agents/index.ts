@@ -4,6 +4,7 @@ import { commanderFrame, brainwashOS, research, trends, launch } from "./strateg
 import { hooks, repurpose, content, twitter, batch, bio, grid } from "./content";
 import { digest, analytics, finance, collab, community, reset } from "./ops";
 import { site } from "./site";
+import { outreach } from "./outreach";
 
 export type AgentResult = {
   ok: boolean;
@@ -16,7 +17,7 @@ export type AgentName =
   | "commander_frame" | "brainwash_os" | "research" | "trends" | "launch"
   | "hooks" | "repurpose" | "content" | "twitter" | "batch" | "bio" | "grid"
   | "digest" | "analytics" | "finance" | "collab" | "community" | "reset"
-  | "site";
+  | "site" | "outreach";
 
 export type AgentCategory = "strategy" | "content" | "operations";
 
@@ -54,6 +55,7 @@ export const AGENT_REGISTRY: Record<AgentName, AgentSpec> = {
   community: spec("community", "operations", "Community engagement metrics", 10, community),
   reset: spec("reset", "operations", "Weekly review and planning", 5, reset),
   site: spec("site", "content", "One-pager marketing site generator", 15, site),
+  outreach: spec("outreach", "strategy", "Cold outreach engine — lever selection + campaign sequences", 15, outreach),
 };
 // Parse natural language command to agent + args
 export function parseCommand(input: string): { agentName: AgentName; args: any } {
@@ -140,6 +142,11 @@ export function parseCommand(input: string): { agentName: AgentName; args: any }
   if (lower.includes("site") || lower.includes("landing") || lower.includes("website") || lower.includes("one-pager") || lower.includes("onepager")) {
     const productMatch = input.match(/(?:site|landing|website|one-pager)\s+(.+)/i);
     return { agentName: "site", args: { product: productMatch ? productMatch[1] : undefined } };
+  }
+
+  // Outreach
+  if (lower.includes("outreach") || lower.includes("cold email") || lower.includes("campaign") || lower.includes("lever") || lower.includes("prospect")) {
+    return { agentName: "outreach", args: { action: lower.includes("sequence") ? "generate_sequence" : lower.includes("grade") ? "grade_subject" : "select_lever", prospect: { pain_point: args } } };
   }
 
   // Default fallback
