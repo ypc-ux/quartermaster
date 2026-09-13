@@ -5,6 +5,8 @@ import { hooks, repurpose, content, twitter, batch, bio, grid } from "./content"
 import { digest, analytics, finance, collab, community, reset } from "./ops";
 import { site } from "./site";
 import { outreach } from "./outreach";
+import { adCreative } from "./ad-creative";
+import { storySequence } from "./story-sequence";
 
 export type AgentResult = {
   ok: boolean;
@@ -17,7 +19,7 @@ export type AgentName =
   | "commander_frame" | "brainwash_os" | "research" | "trends" | "launch"
   | "hooks" | "repurpose" | "content" | "twitter" | "batch" | "bio" | "grid"
   | "digest" | "analytics" | "finance" | "collab" | "community" | "reset"
-  | "site" | "outreach";
+  | "site" | "outreach" | "ad_creative" | "story_sequence";
 
 export type AgentCategory = "strategy" | "content" | "operations";
 
@@ -56,6 +58,8 @@ export const AGENT_REGISTRY: Record<AgentName, AgentSpec> = {
   reset: spec("reset", "operations", "Weekly review and planning", 5, reset),
   site: spec("site", "content", "One-pager marketing site generator", 15, site),
   outreach: spec("outreach", "strategy", "Cold outreach engine — lever selection + campaign sequences", 15, outreach),
+  ad_creative: spec("ad_creative", "content", "Carousel/video/static ad generation", 15, adCreative),
+  story_sequence: spec("story_sequence", "strategy", "Lead scoring + 3-step retargeting sequences", 15, storySequence),
 };
 // Parse natural language command to agent + args
 export function parseCommand(input: string): { agentName: AgentName; args: any } {
@@ -149,6 +153,18 @@ export function parseCommand(input: string): { agentName: AgentName; args: any }
     const action = lower.includes("sequence") ? "generate_sequence" : lower.includes("grade") ? "grade_subject" : "select_lever";
     const painMatch = input.match(/(?:about|for|pain|prospect)\s+(.+)/i);
     return { agentName: "outreach", args: { action, prospect: { pain_point: painMatch ? painMatch[1] : undefined } } };
+  }
+
+  // Ad creative
+  if (lower.includes("ad") || lower.includes("carousel") || lower.includes("video ad") || lower.includes("static ad")) {
+    const fmt = lower.includes("video") ? "video" : lower.includes("static") ? "static" : "carousel";
+    return { agentName: "ad_creative", args: { format: fmt } };
+  }
+
+  // Story sequence / lead scoring
+  if (lower.includes("story sequence") || lower.includes("lead score") || lower.includes("retarget") || lower.includes("classify lead")) {
+    const action = lower.includes("sequence") ? "sequence" : "score";
+    return { agentName: "story_sequence", args: { action } };
   }
 
   // Default fallback
