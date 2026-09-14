@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPU Broker — Cheapest GPUs Live. No Markup. One Bill.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="electric.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">GPU <span class="dim">Broker</span></div>
+  <div class="nav-links">
+    <a href="/gpu.html">Price Index</a>
+    <a href="/calculator.html">Calculator</a>
+    <a href="https://agentdatasync.com/command" target="_blank">Command Center</a>
+    <div class="live-badge"><span class="live-dot"></span> Live</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-purple"></div>
+  <svg class="svg-lines" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+    <path d="M0,540 Q480,200 960,540 T1920,540"/>
+    <path d="M0,300 Q480,600 960,300 T1920,300"/>
+    <path d="M0,780 Q480,400 960,780 T1920,780"/>
+  </svg>
+
+  <div class="hero-badge">Live GPU Prices · Updated Hourly · Free Forever</div>
+
+  <h1 class="headline">
+    <span class="electric">GPU prices are broken.</span><br>We fix them.
+  </h1>
+
+  <p class="subtitle">
+    The same H100 costs $6/hr on AWS and $2/hr on RunPod. We show you the cheapest GPUs live — with a score that tells you if it's actually a good deal.
+  </p>
+
+  <div class="cta-group">
+    <a href="/gpu.html" class="btn-primary">See live prices →</a>
+    <a href="/calculator.html" class="btn-secondary">Calculate your cost</a>
+  </div>
+</div>
+
+<!-- LIVE STATS -->
+<div class="section" style="padding-top:0;padding-bottom:3rem;">
+  <div class="stats-strip">
+    <div class="stat reveal"><div class="stat-value" data-target="152">0</div><div class="stat-label">Live Offers</div></div>
+    <div class="stat reveal"><div class="stat-value" data-target="73">0</div><div class="stat-label">GPU Models</div></div>
+    <div class="stat reveal"><div class="stat-value" data-target="60" data-suffix="%">0</div><div class="stat-label">Avg Savings</div></div>
+    <div class="stat reveal"><div class="stat-value" data-target="362">0</div><div class="stat-label">Data Points</div></div>
+  </div>
+</div>
+
+<!-- FREE STUFF — Generosity First -->
+<div class="section center reveal">
+  <div class="section-label">Free forever · No account needed</div>
+  <div class="section-title">We give away the data that<br>other companies charge for.</div>
+  <div class="section-subtitle">Live GPU prices. Deal scores. Cost calculators. All free. Because generosity is the smartest growth strategy.</div>
+</div>
+<div class="section" style="padding-top:0;">
+  <div class="free-grid">
+    <div class="free-card reveal">
+      <div class="icon cyan">📊</div>
+      <div class="free-name">GPU Price Index</div>
+      <div class="free-desc">Live prices from Vast.ai and RunPod. Updated hourly. 73 GPU models. Deal scores from 1-10.</div>
+      <a href="/gpu.html" class="free-link">See live prices →</a>
+    </div>
+    <div class="free-card reveal">
+      <div class="icon purple">🧮</div>
+      <div class="free-name">Cost Calculator</div>
+      <div class="free-desc">"How much to train my AI?" Enter your model specs. Get instant cost estimates across all providers.</div>
+      <a href="/calculator.html" class="free-link">Calculate your cost →</a>
+    </div>
+    <div class="free-card reveal">
+      <div class="icon green">📈</div>
+      <div class="free-name">Weekly Price Report</div>
+      <div class="free-desc">Every week: which GPUs got cheaper, which got more expensive, and what the smart money is doing.</div>
+      <a href="#" class="free-link">Coming soon →</a>
+    </div>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="section center reveal">
+  <div class="section-label">The Problem</div>
+  <div class="section-title">You're overpaying for GPUs.<br>You just don't know it.</div>
+  <div class="section-subtitle">Cloud pricing is confusing. The "cheapest" option changes every hour. Nobody tells you.</div>
+</div>
+<div class="section" style="padding-top:0;">
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <div class="price-name">AWS</div>
+      <div class="price-value" style="color:var(--red);">$6+</div>
+      <div class="price-unit">/hour · H100</div>
+      <div class="price-desc">On-demand. Locked contracts. High markup.</div>
+    </div>
+    <div class="price-card reveal">
+      <div class="price-name">RunPod</div>
+      <div class="price-value" style="color:var(--green);">$1.99</div>
+      <div class="price-unit">/hour · H100 PCIe</div>
+      <div class="price-desc">Community pricing. Flexible. 67% cheaper.</div>
+    </div>
+    <div class="price-card reveal">
+      <div class="price-name">Vast.ai</div>
+      <div class="price-value" style="color:var(--green);">$2+</div>
+      <div class="price-unit">/hour · H100</div>
+      <div class="price-desc">Spot pricing. Multiple providers. Verified.</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:2rem;" class="reveal">
+    <div style="color:var(--gray);font-size:0.9rem;">Same GPU. Same compute. <span style="color:var(--cyan);font-weight:700;">60% less.</span> That's the problem we solve.</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section center reveal">
+  <div class="section-label">How it works</div>
+  <div class="section-title">Three steps. One bill. Zero stress.</div>
+</div>
+<div class="section" style="padding-top:0;">
+  <div class="steps-grid">
+    <div class="step reveal"><div class="step-num">01</div><div class="step-title">We find the deal</div><div class="step-desc">Our engine scans Vast.ai and RunPod every hour. We grade every deal 1-10. You see the best options live.</div></div>
+    <div class="step reveal"><div class="step-num">02</div><div class="step-title">You pick the GPU</div><div class="step-desc">Choose by price, score, or provider. We handle the setup. SSH access, root control — it's your machine.</div></div>
+    <div class="step reveal"><div class="step-num">03</div><div class="step-title">We manage it</div><div class="step-desc">One bill. No surprise fees. We monitor pricing and switch you if a better deal appears. You train. We optimize.</div></div>
+  </div>
+</div>
+
+<!-- MANAGED SERVICE -->
+<div class="section reveal">
+  <div style="background:linear-gradient(135deg, rgba(0,229,255,0.06), rgba(168,85,247,0.06)); border:1px solid rgba(0,229,255,0.12); border-radius:20px; padding:3rem; text-align:center;">
+    <div class="section-label">The money play</div>
+    <div class="section-title" style="margin-bottom:1rem;">Stop overpaying.<br>Let us find your cheapest GPUs.</div>
+    <div style="color:var(--gray-light);font-size:1rem;max-width:500px;margin:0 auto 2rem;">We audit your GPU bill for free. If you save money, you pay us 20% of the savings. No risk. No contract. Just cheaper compute.</div>
+    <a href="#" class="btn-primary" style="display:inline-flex;">Get a free audit →</a>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="section center">
+  <div class="section-label reveal">Pricing</div>
+  <div class="section-title reveal">Simple pricing. No surprises.</div>
+  <div class="section-subtitle reveal">Start free. Upgrade when ready. 3x between tiers so the choice is obvious.</div>
+  <div class="pricing-grid">
+    <div class="price-card reveal"><div class="price-name">BYOK</div><div class="price-value">$19<span class="price-unit">/mo</span></div><div class="price-desc">Bring your own cloud account. We find the deals. You deploy.</div><ul class="price-features"><li>Full software access</li><li>Unlimited deal scoring</li><li>Price alerts</li><li>Community support</li></ul><a href="#" class="btn-secondary" style="width:100%;justify-content:center;">Get started</a></div>
+    <div class="price-card featured reveal"><div class="price-name">Pro</div><div class="price-value">$59<span class="price-unit">/mo</span></div><div class="price-desc">We manage everything. One bill. 50K tokens included.</div><ul class="price-features"><li>Everything in BYOK</li><li>We manage your GPUs</li><li>50K tokens/month</li><li>Priority support</li><li>$0.003/token overage</li></ul><a href="#" class="btn-primary" style="width:100%;justify-content:center;">Get started</a></div>
+    <div class="price-card reveal"><div class="price-name">Agency</div><div class="price-value">$199<span class="price-unit">/mo</span></div><div class="price-desc">Multiple team members. White-label. 3 seats.</div><ul class="price-features"><li>Everything in Pro</li><li>3 team seats</li><li>White-label dashboard</li><li>500K tokens/month</li><li>Dedicated support</li></ul><a href="#" class="btn-secondary" style="width:100%;justify-content:center;">Get started</a></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="section center reveal">
+  <div style="background:linear-gradient(135deg, rgba(0,229,255,0.04), rgba(0,255,136,0.04)); border:1px solid rgba(0,229,255,0.1); border-radius:20px; padding:4rem 2rem;">
+    <div class="section-title">Ready to stop overpaying?</div>
+    <div style="color:var(--gray-light);font-size:1rem;max-width:400px;margin:0 auto 2rem;">Free Price Index. Free Calculator. Free audit. No credit card.</div>
+    <div class="cta-group">
+      <a href="/gpu.html" class="btn-primary">See live prices →</a>
+      <a href="/calculator.html" class="btn-secondary">Calculate your cost</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><span class="chip"><span class="dot"></span> powered by CATALYST</span></p>
+  <p style="margin-top:1rem;"><a href="https://agentdatasync.com">agentdatasync.com</a> · <a href="https://github.com/ypc-ux/gpu-broker">GitHub</a></p>
+  <p style="margin-top:0.5rem;font-size:0.7rem;color:var(--gray);">Prices live from Vast.ai and RunPod. Deal scores deterministic. Data refreshes hourly.</p>
+</div>
+
+<script>
+// Scroll reveal — elements animate in as you scroll
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Animated counters — numbers count up when they appear
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = parseInt(el.dataset.target), suffix = el.dataset.suffix || '';
+    const start = performance.now(), dur = 1500;
+    const tick = (now) => {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    counterObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-value[data-target]').forEach(el => counterObs.observe(el));
+</script>
+
+</body>
+</html>
