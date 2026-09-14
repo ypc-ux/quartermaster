@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free GPU Bill Audit — VoltageIndex</title>
+<meta name="description" content="We audit your cloud GPU bill and show you where you're overpaying. Free. Average savings: 30-60%.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050810;color:#e2e8f0;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+.nav{position:sticky;top:0;z-index:100;background:rgba(5,8,16,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,229,255,0.1);padding:0.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.1rem;font-weight:800;color:#00e5ff}
+.nav-links a{color:#64748b;text-decoration:none;font-size:0.85rem;margin-left:1.5rem;transition:color 0.15s}
+.nav-links a:hover{color:#e2e8f0}
+.hero{text-align:center;padding:5rem 2rem 2.5rem;max-width:800px;margin:0 auto}
+.badge{display:inline-block;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);color:#00e5ff;padding:0.35rem 1rem;border-radius:100px;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:1rem}
+.hero h1 span{background:linear-gradient(127deg,#00E5FF 0%,#A855F7 60%,#00FF88 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:#94a3b8;font-size:1.05rem;max-width:540px;margin:0 auto;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;max-width:760px;margin:2rem auto;padding:0 2rem}
+.stat{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.1);border-radius:12px;padding:1.1rem;text-align:center}
+.sv{font-size:1.6rem;font-weight:800;color:#00e5ff}.sl{font-size:0.72rem;color:#64748b;margin-top:0.2rem}
+.section{max-width:760px;margin:0 auto;padding:0 2rem 2rem}
+.pain{background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.15);border-radius:16px;padding:1.8rem;margin-bottom:2rem}
+.pain h2{font-size:1.3rem;color:#f87171;margin-bottom:0.6rem}.pain p{color:#94a3b8;line-height:1.6;font-size:0.92rem}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.card{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.1);border-radius:14px;padding:1.3rem}
+.card-icon{font-size:1.4rem;margin-bottom:0.6rem}.card h3{font-size:0.95rem;color:#e2e8f0;margin-bottom:0.4rem}.card p{font-size:0.82rem;color:#94a3b8;line-height:1.5}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">&#9889; VoltageIndex</div>
+  <div class="nav-links"><a href="/home.html">Home</a><a href="/gpu.html">Prices</a><a href="/calculator.html">Calculator</a><a href="/offer.html">Managed GPU</a></div>
+</nav>
+<div class="hero">
+  <div class="badge">Free Audit &mdash; No Obligation</div>
+  <h1>Your Cloud GPU Bill Is <span>A Lie.</span></h1>
+  <p>The same H100 costs $6/hr on AWS and $2/hr on RunPod. Most AI startups overpay 30-60%. We'll find exactly where &mdash; for free.</p>
+</div>
+<div class="stats">
+  <div class="stat"><div class="sv">152</div><div class="sl">Live Offers</div></div>
+  <div class="stat"><div class="sv">30-60%</div><div class="sl">Avg Savings</div></div>
+  <div class="stat"><div class="sv">84</div><div class="sl">GPU Models</div></div>
+  <div class="stat"><div class="sv" style="animation:pulse 2s infinite">1-10</div><div class="sl">Deal Scores</div></div>
+</div>
+<div class="section">
+  <div class="pain">
+    <h2>The problem: nobody checks</h2>
+    <p>You picked a cloud provider, picked a GPU, and never looked again. Prices move every hour. New providers launch cheaper options. We check every hour and grade every deal 1-10 so you know if it's a steal or a trap.</p>
+  </div>
+  <div class="grid3">
+    <div class="card"><div class="card-icon">&#128269;</div><h3>We find the savings</h3><p>We compare your current config against 152+ live offers across Vast.ai and RunPod.</p></div>
+    <div class="card"><div class="card-icon">&#128202;</div><h3>We prove it with scores</h3><p>Every deal graded 1-10 on price, seller trust, stability, speed, and strength.</p></div>
+    <div class="card"><div class="card-icon">&#128184;</div><h3>You cut the bill</h3><p>Get a personalized report showing where you're overpaying &mdash; and what to switch to.</p></div>
+  </div>
+
+  <style>
+  .form-box{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.15);border-radius:16px;padding:2rem;margin-bottom:2rem}
+  .form-box h2{font-size:1.2rem;margin-bottom:0.4rem}.sub{color:#94a3b8;font-size:0.88rem;margin-bottom:1.3rem}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+  @media(max-width:640px){.row{grid-template-columns:1fr}}
+  .f label{display:block;font-size:0.73rem;color:#64748b;margin-bottom:0.3rem;font-weight:500}
+  .f input,.f select{width:100%;background:#0A0E1A;border:1px solid rgba(0,229,255,0.15);border-radius:10px;padding:0.75rem 1rem;color:#e2e8f0;font-family:'Inter',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.15s}
+  .f input:focus,.f select:focus{border-color:rgba(0,229,255,0.4)}.f select option{background:#0A0E1A}
+  .btn{width:100%;background:#00e5ff;color:#050810;border:none;border-radius:10px;padding:0.95rem;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif}
+  .btn:hover{background:#33ecff;transform:translateY(-1px)}.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+  .btn-sub{display:block;text-align:center;font-size:0.73rem;color:#64748b;margin-top:0.6rem}
+  .ok{display:none;text-align:center;padding:2rem}.ok .ck{font-size:2.5rem;margin-bottom:0.8rem}.ok h2{color:#00ff88;margin-bottom:0.4rem}.ok p{color:#94a3b8}
+  .footer{text-align:center;padding:2rem;border-top:1px solid rgba(255,255,255,0.05);margin-top:2rem}
+  .footer p{font-size:0.78rem;color:#64748b;margin-bottom:0.4rem}.footer a{color:#00e5ff;text-decoration:none}
+  </style>
+  <div class="form-box" id="fbox">
+    <h2>Get Your Free Audit</h2>
+    <p class="sub">Tell us what you're running. We'll send your personalized savings report within 24 hours.</p>
+    <form id="af">
+      <div class="row">
+        <div class="f"><label>Email</label><input type="email" id="email" placeholder="you@company.com" required></div>
+        <div class="f"><label>Monthly GPU spend</label><select id="spend"><option value="">Select range</option><option value="under-1k">Under $1K</option><option value="1k-10k">$1K - $10K</option><option value="10k-50k">$10K - $50K</option><option value="50k-plus">$50K+</option></select></div>
+      </div>
+      <div class="row">
+        <div class="f"><label>Primary provider</label><select id="prov"><option value="">Select provider</option><option value="aws">AWS</option><option value="gcp">Google Cloud</option><option value="azure">Azure</option><option value="runpod">RunPod</option><option value="vast">Vast.ai</option><option value="other">Other</option></select></div>
+        <div class="f"><label>GPU type (if you know)</label><input type="text" id="gpu" placeholder="H100, A100, RTX 4090..."></div>
+      </div>
+      <button class="btn" type="submit" id="sub">Get My Free Audit &#8594;</button>
+      <span class="btn-sub">No spam. No card. One personalized report.</span>
+    </form>
+    <div class="ok" id="ok">
+      <div class="ck">&#9989;</div>
+      <h2>You're In.</h2>
+      <p>Check your email &mdash; your audit report is on the way.</p>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <p><span style="color:#00ff88">&#9679;</span> powered by VoltageIndex</p>
+  <p><a href="/gpu.html">Price Index</a> &middot; <a href="/calculator.html">Calculator</a> &middot; <a href="/offer.html">Managed GPU</a></p>
+  <p style="margin-top:0.4rem;font-size:0.7rem">Prices live from Vast.ai and RunPod. Deal scores are deterministic, not vibes.</p>
+</div>
+<script>
+document.getElementById('af').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=document.getElementById('sub');
+  btn.disabled=true;btn.textContent='Sending...';
+  try{
+    const r=await fetch('/api/audit',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:document.getElementById('email').value,monthly_spend:document.getElementById('spend').value,provider:document.getElementById('prov').value,gpu_type:document.getElementById('gpu').value,source:'audit-page'})});
+    if(r.ok){document.getElementById('af').style.display='none';document.getElementById('ok').style.display='block';}
+    else{const d=await r.json();btn.disabled=false;btn.textContent='Get My Free Audit \u2192';alert(d.error||'Try again');}
+  }catch{btn.disabled=false;btn.textContent='Get My Free Audit \u2192';alert('Network error');}
+});
+</script>
+</body>
+</html>

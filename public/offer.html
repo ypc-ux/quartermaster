@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Managed GPU Service — VoltageIndex</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050810;color:#e2e8f0;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+.nav{position:sticky;top:0;z-index:100;background:rgba(5,8,16,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,229,255,0.1);padding:0.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.1rem;font-weight:800;color:#00e5ff}
+.nav-links a{color:#64748b;text-decoration:none;font-size:0.85rem;margin-left:1.5rem}.nav-links a:hover{color:#e2e8f0}
+.hero{text-align:center;padding:5rem 2rem 3rem;max-width:800px;margin:0 auto}
+.badge{display:inline-block;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);color:#00e5ff;padding:0.35rem 1rem;border-radius:100px;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.5rem}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:1rem}
+.hero h1 span{background:linear-gradient(127deg,#00E5FF 0%,#A855F7 60%,#00FF88 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:#94a3b8;font-size:1.05rem;max-width:540px;margin:0 auto;line-height:1.6}
+.section{max-width:900px;margin:0 auto;padding:0 2rem 3rem}
+.st{text-align:center;font-size:1.1rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2rem}
+.pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-bottom:3rem}
+.plan{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.1);border-radius:18px;padding:2rem;position:relative;display:flex;flex-direction:column}
+.plan.pop{border-color:rgba(0,229,255,0.4);box-shadow:0 0 30px rgba(0,229,255,0.08)}
+.pop-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#00e5ff;color:#050810;padding:0.25rem 1rem;border-radius:100px;font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+.plan-name{font-size:1.2rem;font-weight:700;margin-bottom:0.3rem;color:#e2e8f0}
+.plan-price{font-size:2.2rem;font-weight:800;color:#00e5ff;margin-bottom:0.3rem}
+.plan-price .mo{font-size:0.9rem;font-weight:400;color:#64748b}
+.plan-desc{font-size:0.82rem;color:#94a3b8;line-height:1.5;margin-bottom:1.5rem;flex:1}
+.plan-features{list-style:none;margin-bottom:1.5rem}
+.plan-features li{font-size:0.82rem;color:#94a3b8;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.plan-features li::before{content:"\2713 ";color:#00ff88;margin-right:0.4rem}
+.btn{display:block;width:100%;background:#00e5ff;color:#050810;border:none;border-radius:10px;padding:0.85rem;font-size:0.92rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-align:center;text-decoration:none}
+.btn:hover{background:#33ecff}.btn-ghost{display:block;width:100%;background:transparent;color:#00e5ff;border:1px solid rgba(0,229,255,0.3);border-radius:10px;padding:0.85rem;font-size:0.92rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-align:center;text-decoration:none}
+.btn-ghost:hover{background:rgba(0,229,255,0.05)}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">&#9889; VoltageIndex</div>
+  <div class="nav-links"><a href="/home.html">Home</a><a href="/gpu.html">Prices</a><a href="/calculator.html">Calculator</a><a href="/audit.html">Free Audit</a></div>
+</nav>
+<div class="hero">
+  <div class="badge">Managed GPU Service</div>
+  <h1>We Manage Your GPUs. <span>You Ship.</span></h1>
+  <p>Stop overpaying for cloud compute. We find the cheapest GPUs, manage the deals, and give you one simple bill. Save 30-60% vs AWS/GCP on-demand.</p>
+</div>
+<div class="section">
+  <div class="st">Choose your plan</div>
+  <div class="pricing">
+    <div class="plan">
+      <div class="plan-name">BYOK</div><div class="plan-price">$19<span class="mo">/mo</span></div>
+      <div class="plan-desc">Bring your own cloud account. We find the cheapest GPUs and tell you exactly what to spin up.</div>
+      <ul class="plan-features"><li>Live price monitoring</li><li>Daily deal alerts</li><li>Deal score reports</li><li>Email support</li></ul>
+      <a class="btn-ghost" href="/audit.html">Start with a Free Audit</a>
+    </div>
+    <div class="plan pop">
+      <div class="pop-tag">Most Popular</div>
+      <div class="plan-name">Pro</div><div class="plan-price">$59<span class="mo">/mo</span></div>
+      <div class="plan-desc">End-to-end GPU management. We handle procurement, billing, and optimization. One bill, done.</div>
+      <ul class="plan-features"><li>Everything in BYOK</li><li>We manage your GPUs end-to-end</li><li>Single consolidated bill</li><li>50K tokens included</li><li>Overage: $0.003/token</li><li>Priority support</li></ul>
+      <a class="btn" href="/audit.html">Get Started</a>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Agency</div><div class="plan-price">$199<span class="mo">/mo</span></div>
+      <div class="plan-desc">For teams managing multiple projects. White-label reports, multiple seats, and dedicated support.</div>
+      <ul class="plan-features"><li>Everything in Pro</li><li>3 team seats</li><li>White-label reports</li><li>Dedicated account manager</li><li>Custom integrations</li><li>Slack/Teams support</li></ul>
+      <a class="btn-ghost" href="/audit.html">Contact Us</a>
+    </div>
+  </div>
+
+  <style>
+  .cmp{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.1);border-radius:16px;padding:2rem;margin-bottom:2rem}
+  .cmp h3{font-size:1rem;margin-bottom:1rem;color:#e2e8f0}
+  .cmp table{width:100%;border-collapse:collapse}
+  .cmp td,.cmp th{padding:0.6rem 0.75rem;text-align:center;font-size:0.82rem;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .cmp th{color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;font-size:0.72rem}
+  .cmp td:first-child{text-align:left;color:#94a3b8}.cmp .y{color:#00ff88}.cmp .n{color:#475569}
+  .footer{text-align:center;padding:2rem;border-top:1px solid rgba(255,255,255,0.05);margin-top:2rem}
+  .footer p{font-size:0.78rem;color:#64748b;margin-bottom:0.4rem}.footer a{color:#00e5ff;text-decoration:none}
+  </style>
+  <div class="cmp">
+    <h3>Feature Comparison</h3>
+    <table>
+      <tr><th></th><th>BYOK</th><th>Pro</th><th>Agency</th></tr>
+      <tr><td>Live price monitoring</td><td class="y">&#10003;</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+      <tr><td>Daily deal alerts</td><td class="y">&#10003;</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+      <tr><td>Deal score reports</td><td class="y">&#10003;</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+      <tr><td>End-to-end management</td><td class="n">&mdash;</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+      <tr><td>Single consolidated bill</td><td class="n">&mdash;</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+      <tr><td>Tokens included</td><td class="n">&mdash;</td><td>50K</td><td>150K</td></tr>
+      <tr><td>Team seats</td><td>1</td><td>1</td><td>3</td></tr>
+      <tr><td>White-label reports</td><td class="n">&mdash;</td><td class="n">&mdash;</td><td class="y">&#10003;</td></tr>
+      <tr><td>Dedicated account manager</td><td class="n">&mdash;</td><td class="n">&mdash;</td><td class="y">&#10003;</td></tr>
+      <tr><td>Support</td><td>Email</td><td>Priority</td><td>Slack/Teams</td></tr>
+    </table>
+  </div>
+</div>
+<div class="footer">
+  <p><span style="color:#00ff88">&#9679;</span> powered by VoltageIndex</p>
+  <p>Not sure? <a href="/audit.html">Get a free audit first</a> &mdash; we'll show you exactly how much you'd save.</p>
+</div>
+</body>
+</html>
