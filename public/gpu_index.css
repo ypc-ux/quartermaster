@@ -1,0 +1,41 @@
+/* GPU Price Index — Styles */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --navy: #0B1426; --navy-light: #111d35; --gold: #c9a227; --white: #f0f0f0; --gray: #8899aa; --green: #22c55e; --red: #ef4444; }
+body { background: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; line-height: 1.6; }
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(11, 20, 38, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201, 162, 39, 0.2); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Instrument Serif', serif; font-size: 1.4rem; color: var(--gold); }
+.nav-logo span { color: var(--white); font-weight: 400; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { color: var(--gray); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.nav-links a:hover { color: var(--gold); }
+.hero { text-align: center; padding: 4rem 2rem 2rem; max-width: 800px; margin: 0 auto; }
+.hero-badge { display: inline-block; background: rgba(201, 162, 39, 0.15); border: 1px solid rgba(201, 162, 39, 0.3); color: var(--gold); padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+.hero h1 { font-family: 'Instrument Serif', serif; font-size: 3rem; line-height: 1.15; margin-bottom: 1rem; }
+.hero h1 .gold { color: var(--gold); }
+.hero p { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem; }
+.stats-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto 2rem; padding: 0 2rem; }
+.stat { background: var(--navy-light); border: 1px solid rgba(201, 162, 39, 0.1); border-radius: 10px; padding: 1rem; text-align: center; }
+.stat-value { font-size: 1.8rem; font-weight: 700; color: var(--gold); margin-bottom: 0.25rem; }
+.stat-label { font-size: 0.7rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; }
+.section { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+.section-title { font-family: 'Instrument Serif', serif; font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center; }
+.gpu-card { background: var(--navy-light); border: 1px solid rgba(201, 162, 39, 0.1); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
+.gpu-card-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(201, 162, 39, 0.1); }
+.gpu-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; }
+.gpu-desc { color: var(--gray); font-size: 0.85rem; }
+.offer-header { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.7rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid rgba(201, 162, 39, 0.05); }
+.offer-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.offer-row:hover { background: rgba(201, 162, 39, 0.05); }
+.offer-row:last-child { border-bottom: none; }
+.offer-provider { font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
+.offer-pool { color: var(--gray); font-size: 0.85rem; }
+.offer-price { font-weight: 700; color: var(--gold); }
+.offer-unit { font-weight: 400; font-size: 0.75rem; color: var(--gray); }
+.offer-score { font-weight: 600; font-size: 0.85rem; }
+.offer-region { color: var(--gray); font-size: 0.8rem; }
+.footer { text-align: center; padding: 3rem 2rem; color: var(--gray); font-size: 0.8rem; border-top: 1px solid rgba(201, 162, 39, 0.1); max-width: 1000px; margin: 0 auto; }
+.footer a { color: var(--gold); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.agent-chip { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #8b5cf6; padding: 0.3rem 0.7rem; border-radius: 100px; font-size: 0.7rem; font-weight: 500; }
+.agent-dot { width: 6px; height: 6px; background: #8b5cf6; border-radius: 50%; }
+@media (max-width: 768px) { .hero h1 { font-size: 2rem; } .stats-strip { grid-template-columns: repeat(2, 1fr); } .offer-header, .offer-row { grid-template-columns: 1fr; gap: 0.25rem; } .offer-header span { display: none; } }
