@@ -1,0 +1,854 @@
+{
+  "offers": [
+    {
+      "gpu_name": "Tesla P100",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0135,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 1,
+      "region": "Brazil, BR"
+    },
+    {
+      "gpu_name": "GTX 1660 S",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0222,
+      "deal_score": 4,
+      "vram_gb": 6.0,
+      "num_gpus": 4,
+      "region": ", CN"
+    },
+    {
+      "gpu_name": "Tesla P4",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0233,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "New York, US"
+    },
+    {
+      "gpu_name": "RTX 3060 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0281,
+      "deal_score": 5,
+      "vram_gb": 8.0,
+      "num_gpus": 2,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "GTX 1080 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0289,
+      "deal_score": 5,
+      "vram_gb": 11.0,
+      "num_gpus": 2,
+      "region": "France, FR"
+    },
+    {
+      "gpu_name": "Quadro P2000",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0289,
+      "deal_score": 6,
+      "vram_gb": 5.0,
+      "num_gpus": 2,
+      "region": "Nevada, US"
+    },
+    {
+      "gpu_name": "RTX 3060",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0289,
+      "deal_score": 7,
+      "vram_gb": 12.0,
+      "num_gpus": 2,
+      "region": "Yunnan, CN"
+    },
+    {
+      "gpu_name": "Tesla V100",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0289,
+      "deal_score": 4,
+      "vram_gb": 32.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "L4",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.0324,
+      "deal_score": 4,
+      "vram_gb": 24.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "GTX 1060",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.035,
+      "deal_score": 5,
+      "vram_gb": 6.0,
+      "num_gpus": 1,
+      "region": "Spain, ES"
+    },
+    {
+      "gpu_name": "GTX TITAN X",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0356,
+      "deal_score": 6,
+      "vram_gb": 12.0,
+      "num_gpus": 2,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "RTX A2000",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0361,
+      "deal_score": 4,
+      "vram_gb": 6.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "Quadro P4000",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0415,
+      "deal_score": 5,
+      "vram_gb": 8.0,
+      "num_gpus": 2,
+      "region": "Missouri, US"
+    },
+    {
+      "gpu_name": "GTX 1070",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0422,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "Titan Xp",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0422,
+      "deal_score": 6,
+      "vram_gb": 12.0,
+      "num_gpus": 2,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "GTX 1080",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0449,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "Germany, DE"
+    },
+    {
+      "gpu_name": "RTX 2060",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0469,
+      "deal_score": 6,
+      "vram_gb": 12.0,
+      "num_gpus": 1,
+      "region": "British Columbia, CA"
+    },
+    {
+      "gpu_name": "GTX 1650",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0474,
+      "deal_score": 7,
+      "vram_gb": 4.0,
+      "num_gpus": 2,
+      "region": "Oregon, US"
+    },
+    {
+      "gpu_name": "GTX 1660",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0489,
+      "deal_score": 6,
+      "vram_gb": 6.0,
+      "num_gpus": 2,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "RTX 3070",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0489,
+      "deal_score": 4,
+      "vram_gb": 8.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "GTX 1070 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0516,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "RTX 5060",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0554,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "Vietnam, VN"
+    },
+    {
+      "gpu_name": "Q RTX 4000",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0556,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "Spain, ES"
+    },
+    {
+      "gpu_name": "RTX 3070 laptop",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0556,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "Virginia, US"
+    },
+    {
+      "gpu_name": "RTX 3080 Ti",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0556,
+      "deal_score": 4,
+      "vram_gb": 12.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4060",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0556,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "Hong Kong, HK"
+    },
+    {
+      "gpu_name": "RTX 5060 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0585,
+      "deal_score": 6,
+      "vram_gb": 15.9,
+      "num_gpus": 1,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "RTX 2070",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0622,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "Ontario, CA"
+    },
+    {
+      "gpu_name": "RTX 2060S",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0662,
+      "deal_score": 6,
+      "vram_gb": 8.0,
+      "num_gpus": 1,
+      "region": "Vietnam, VN"
+    },
+    {
+      "gpu_name": "RTX 4070S Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0689,
+      "deal_score": 6,
+      "vram_gb": 16.0,
+      "num_gpus": 1,
+      "region": ", CN"
+    },
+    {
+      "gpu_name": "RTX 3060 laptop",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0696,
+      "deal_score": 6,
+      "vram_gb": 12.0,
+      "num_gpus": 1,
+      "region": "New Zealand, NZ"
+    },
+    {
+      "gpu_name": "RTX A5000",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0702,
+      "deal_score": 5,
+      "vram_gb": 24.0,
+      "num_gpus": 10,
+      "region": ""
+    },
+    {
+      "gpu_name": "GTX 1660 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0711,
+      "deal_score": 5,
+      "vram_gb": 6.0,
+      "num_gpus": 1,
+      "region": "United Kingdom, GB"
+    },
+    {
+      "gpu_name": "RTX A4000",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0729,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 5070",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0741,
+      "deal_score": 6,
+      "vram_gb": 11.9,
+      "num_gpus": 1,
+      "region": "Vietnam, VN"
+    },
+    {
+      "gpu_name": "RTX A4500",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0748,
+      "deal_score": 4,
+      "vram_gb": 20.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 2080 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0778,
+      "deal_score": 5,
+      "vram_gb": 22.0,
+      "num_gpus": 2,
+      "region": "United Kingdom, GB"
+    },
+    {
+      "gpu_name": "RTX 3080",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0804,
+      "deal_score": 4,
+      "vram_gb": 20.0,
+      "num_gpus": 2,
+      "region": ""
+    },
+    {
+      "gpu_name": "Tesla P40",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0809,
+      "deal_score": 6,
+      "vram_gb": 24.0,
+      "num_gpus": 1,
+      "region": "Brazil, BR"
+    },
+    {
+      "gpu_name": "RTX 4070",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0822,
+      "deal_score": 6,
+      "vram_gb": 12.0,
+      "num_gpus": 1,
+      "region": "Quebec, CA"
+    },
+    {
+      "gpu_name": "RTX 5070 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0822,
+      "deal_score": 6,
+      "vram_gb": 15.9,
+      "num_gpus": 1,
+      "region": "South Korea, KR"
+    },
+    {
+      "gpu_name": "RTX 3090",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0828,
+      "deal_score": 6,
+      "vram_gb": 24.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4060 Ti",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0837,
+      "deal_score": 6,
+      "vram_gb": 16.0,
+      "num_gpus": 1,
+      "region": ", US"
+    },
+    {
+      "gpu_name": "RTX 4070S",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0844,
+      "deal_score": 6,
+      "vram_gb": 12.0,
+      "num_gpus": 1,
+      "region": "United States, US"
+    },
+    {
+      "gpu_name": "Tesla T4",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0945,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 1,
+      "region": "Italy, IT"
+    },
+    {
+      "gpu_name": "RTX 3090 Ti",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.0956,
+      "deal_score": 6,
+      "vram_gb": 24.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4080S",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.0956,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 1,
+      "region": "Quebec, CA"
+    },
+    {
+      "gpu_name": "A16",
+      "provider": "vast",
+      "pool": "on-demand",
+      "price_hr": 0.1081,
+      "deal_score": 6,
+      "vram_gb": 15.0,
+      "num_gpus": 1,
+      "region": "Vietnam, VN"
+    },
+    {
+      "gpu_name": "RTX 4000 Ada SFF",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.18,
+      "deal_score": 5,
+      "vram_gb": 20.0,
+      "num_gpus": 7,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4070 Ti",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.19,
+      "deal_score": 5,
+      "vram_gb": 12.0,
+      "num_gpus": 5,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4000 Ada",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.2,
+      "deal_score": 5,
+      "vram_gb": 20.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "V100 SXM2",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.23,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 2000 Ada",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.24,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4080",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.27,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 2,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4080 SUPER",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.28,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX A6000",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.33,
+      "deal_score": 5,
+      "vram_gb": 48.0,
+      "num_gpus": 10,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 4090",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.34,
+      "deal_score": 6,
+      "vram_gb": 24.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX PRO 4500",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.34,
+      "deal_score": 5,
+      "vram_gb": 32.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "A40",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.35,
+      "deal_score": 5,
+      "vram_gb": 48.0,
+      "num_gpus": 10,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 5080",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.39,
+      "deal_score": 5,
+      "vram_gb": 16.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 5000 Ada",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.49,
+      "deal_score": 5,
+      "vram_gb": 32.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "H200 NVL",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.5,
+      "deal_score": 5,
+      "vram_gb": 143.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "MI300X",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.5,
+      "deal_score": 6,
+      "vram_gb": 192.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "PRO 6000 MIG 24GB",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.5,
+      "deal_score": 5,
+      "vram_gb": 24.0,
+      "num_gpus": 32,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX PRO 4000",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.5,
+      "deal_score": 5,
+      "vram_gb": 24.0,
+      "num_gpus": 4,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX PRO 4500 SE",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 0.5,
+      "deal_score": 5,
+      "vram_gb": 32.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX PRO 6000 MaxQ",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.5,
+      "deal_score": 5,
+      "vram_gb": 96.0,
+      "num_gpus": 2,
+      "region": ""
+    },
+    {
+      "gpu_name": "L40",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.69,
+      "deal_score": 5,
+      "vram_gb": 48.0,
+      "num_gpus": 10,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 5090",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.69,
+      "deal_score": 5,
+      "vram_gb": 32.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX 6000 Ada",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.74,
+      "deal_score": 5,
+      "vram_gb": 48.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "L40S",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.79,
+      "deal_score": 5,
+      "vram_gb": 48.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX PRO 5000",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 0.82,
+      "deal_score": 5,
+      "vram_gb": 48.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "A100 SXM 40GB",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 1.0,
+      "deal_score": 6,
+      "vram_gb": 40.0,
+      "num_gpus": 2,
+      "region": ""
+    },
+    {
+      "gpu_name": "PRO 6000 MIG 48GB",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 1.0,
+      "deal_score": 5,
+      "vram_gb": 48.0,
+      "num_gpus": 16,
+      "region": ""
+    },
+    {
+      "gpu_name": "A100 PCIe",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 1.19,
+      "deal_score": 6,
+      "vram_gb": 80.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "A100 SXM",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 1.39,
+      "deal_score": 6,
+      "vram_gb": 80.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX PRO 6000",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 1.69,
+      "deal_score": 5,
+      "vram_gb": 96.0,
+      "num_gpus": 9,
+      "region": ""
+    },
+    {
+      "gpu_name": "RTX PRO 6000 WK",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 1.69,
+      "deal_score": 5,
+      "vram_gb": 96.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "H100 PCIe",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 1.99,
+      "deal_score": 6,
+      "vram_gb": 80.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "H100 NVL",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 2.59,
+      "deal_score": 6,
+      "vram_gb": 94.0,
+      "num_gpus": 10,
+      "region": ""
+    },
+    {
+      "gpu_name": "H100 SXM",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 2.69,
+      "deal_score": 6,
+      "vram_gb": 80.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "H200 SXM",
+      "provider": "runpod",
+      "pool": "community",
+      "price_hr": 3.59,
+      "deal_score": 5,
+      "vram_gb": 141.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "B200",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 5.98,
+      "deal_score": 5,
+      "vram_gb": 180.0,
+      "num_gpus": 8,
+      "region": ""
+    },
+    {
+      "gpu_name": "B300",
+      "provider": "runpod",
+      "pool": "secure",
+      "price_hr": 6.94,
+      "deal_score": 5,
+      "vram_gb": 288.0,
+      "num_gpus": 8,
+      "region": ""
+    }
+  ],
+  "stats": {
+    "total_offers": 451,
+    "models": 84,
+    "providers": [
+      "vast",
+      "runpod"
+    ],
+    "updated_at": "2026-09-14T11:00:00Z"
+  },
+  "source": "static"
+}

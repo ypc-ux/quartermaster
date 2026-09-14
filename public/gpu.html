@@ -173,5 +173,98 @@
   <p style="margin-top:1rem;"><a href="https://agentdatasync.com">agentdatasync.com</a> · <a href="https://github.com/ypc-ux/gpu-broker">github.com/ypc-ux/gpu-broker</a></p>
   <p style="margin-top:0.5rem;font-size:0.7rem;color:var(--gray);">Prices are live from Vast.ai and RunPod APIs. Deal scores are deterministic (no AI). Data refreshes hourly.</p>
 </div>
+<script>
+(function() {
+  const SCORE_COLORS = { STEAL: '#00ff88', GOOD: '#22c55e', FAIR: '#c9a227', RISKY: '#f97316', TRAP: '#ef4444' };
+  const GPU_DESC = {
+    'H100 SXM': 'NVIDIA flagship for LLM training',
+    'H100 NVL': 'High-memory H100 variant',
+    'H100 PCIe': 'Most common H100 variant',
+    'A100 SXM': 'Workhorse for fine-tuning',
+    'A100 PCIe': 'Budget A100 for inference',
+    'RTX 4090': 'Best value for inference',
+    'RTX 3090': '24GB beast on a budget',
+    'B200': 'Next-gen Blackwell',
+    'B300': 'Blackwell Ultra',
+    'H200 NVL': 'Hopper with HBM3e',
+    'MI300': 'AMD AI accelerator',
+  };
+
+  function getDesc(name) {
+    for (const [k, v] of Object.entries(GPU_DESC)) {
+      if (name.includes(k)) return v;
+    }
+    return '';
+  }
+
+  function buildCard(offers) {
+    const gpuName = offers[0].gpu_name;
+    const vram = offers[0].vram_gb;
+    const desc = getDesc(gpuName);
+    const vramLabel = vram ? ` ${Math.round(vram)}GB` : '';
+    const rows = offers.map(o => {
+      const c = SCORE_COLORS[o.score_label] || '#c9a227';
+      return `<div class="offer-row">
+        <div class="offer-provider">${o.provider.toUpperCase()}</div>
+        <div class="offer-pool">${o.pool}</div>
+        <div class="offer-price">$${o.price_hr.toFixed(2)}<span class="offer-unit">/hr</span></div>
+        <div class="offer-score" style="color:${c}">${o.deal_score}/10 ${o.score_label}</div>
+        <div class="offer-region">${o.region || ''}</div>
+      </div>`;
+    }).join('');
+    return `<div class="gpu-card">
+      <div class="gpu-card-header">
+        <div class="gpu-name">${gpuName}${vramLabel}</div>
+        ${desc ? `<div class="gpu-desc">${desc}</div>` : ''}
+      </div>
+      <div class="offer-list">
+        <div class="offer-header"><span>Provider</span><span>Pool</span><span>Price</span><span>Score</span><span>Region</span></div>
+        ${rows}
+      </div>
+    </div>`;
+  }
+
+  fetch('/api/gpu').then(r => r.json()).then(data => {
+    if (!data.offers || data.offers.length === 0) return;
+
+    // Update stats strip
+    const stats = document.querySelectorAll('.stat-value');
+    if (stats.length >= 3) {
+      stats[0].textContent = data.stats.total_scored || data.stats.total_offers;
+      stats[1].textContent = (data.stats.providers || []).length;
+      stats[2].textContent = data.stats.models;
+    }
+
+    // Group offers by GPU model (top 8 most important)
+    const TARGET = ['H100 SXM', 'H100 NVL', 'H100 PCIe', 'A100 SXM', 'A100 PCIe', 'RTX 4090', 'RTX 3090', 'B200', 'B300', 'H200 NVL', 'MI300', 'RTX 3060'];
+    const groups = {};
+    for (const o of data.offers) {
+      for (const t of TARGET) {
+        if (o.gpu_name.includes(t)) {
+          if (!groups[t]) groups[t] = [];
+          if (groups[t].length < 3) groups[t].push(o);
+          break;
+        }
+      }
+    }
+
+    const cards = Object.values(groups)
+      .sort((a, b) => a[0].price_hr - b[0].price_hr)
+      .map(buildCard)
+      .join('');
+
+    if (cards) {
+      const section = document.querySelector('.section');
+      if (section) {
+        section.innerHTML = `<div class="section-title">Best Deals by GPU</div><div class="section-subtitle" style="font-size:0.8rem;color:var(--gray);margin-top:-1rem;margin-bottom:1.5rem;">Source: ${data.source} · ${new Date().toLocaleTimeString()}</div>${cards}`;
+      }
+    }
+
+    // Update footer timestamp
+    const footer = document.querySelector('.footer p');
+    if (footer) footer.textContent = 'Last updated: ' + new Date().toUTCString();
+  }).catch(() => {});
+})();
+</script>
 </body>
 </html>
