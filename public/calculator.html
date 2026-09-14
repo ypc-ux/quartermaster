@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPU Training Cost Calculator — How Much to Train Your AI?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>/* Calculator Styles */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --navy: #0B1426; --navy-light: #111d35; --gold: #c9a227; --white: #f0f0f0; --gray: #8899aa; --green: #22c55e; }
+body { background: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; line-height: 1.6; }
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(11,20,38,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,162,39,0.2); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Instrument Serif', serif; font-size: 1.4rem; color: var(--gold); }
+.nav-logo span { color: var(--white); font-weight: 400; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { color: var(--gray); text-decoration: none; font-size: 0.85rem; font-weight: 500; text-transform: uppercase; }
+.nav-links a:hover { color: var(--gold); }
+.hero { text-align: center; padding: 4rem 2rem 2rem; max-width: 800px; margin: 0 auto; }
+.hero-badge { display: inline-block; background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.3); color: var(--gold); padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+.hero h1 { font-family: 'Instrument Serif', serif; font-size: 3rem; line-height: 1.15; margin-bottom: 1rem; }
+.hero h1 .gold { color: var(--gold); }
+.hero p { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem; }
+.section { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+.section-title { font-family: 'Instrument Serif', serif; font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center; }
+.presets { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.preset { background: var(--navy-light); border: 1px solid rgba(201,162,39,0.1); border-radius: 12px; padding: 1.25rem; cursor: pointer; transition: all 0.2s; }
+.preset:hover { border-color: var(--gold); background: rgba(201,162,39,0.05); }
+.preset.active { border-color: var(--gold); background: rgba(201,162,39,0.1); }
+.preset-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
+.preset-desc { color: var(--gray); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.preset-specs { display: flex; gap: 0.75rem; font-size: 0.8rem; color: var(--gold); }
+.calc { background: var(--navy-light); border: 1px solid rgba(201,162,39,0.1); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
+.calc-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.calc-group { display: flex; flex-direction: column; }
+.calc-label { font-size: 0.8rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+.calc-input { background: var(--navy); border: 1px solid rgba(201,162,39,0.2); border-radius: 8px; padding: 0.75rem; color: var(--white); font-size: 1rem; }
+.calc-input:focus { outline: none; border-color: var(--gold); }
+.results-title { font-family: 'Instrument Serif', serif; font-size: 1.5rem; margin: 2rem 0 1rem; text-align: center; }
+.gpu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+.gpu-card { background: var(--navy); border: 1px solid rgba(201,162,39,0.1); border-radius: 10px; padding: 1.25rem; text-align: center; }
+.gpu-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
+.gpu-price { font-size: 1.8rem; font-weight: 700; color: var(--gold); }
+.gpu-unit { font-size: 0.8rem; color: var(--gray); }
+.gpu-total { font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem; }
+.gpu-best { font-size: 0.8rem; color: var(--green); margin-top: 0.5rem; }
+.footer { text-align: center; padding: 3rem 2rem; color: var(--gray); font-size: 0.8rem; border-top: 1px solid rgba(201,162,39,0.1); max-width: 1000px; margin: 0 auto; }
+.footer a { color: var(--gold); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.chip { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); color: #8b5cf6; padding: 0.3rem 0.7rem; border-radius: 100px; font-size: 0.7rem; font-weight: 500; }
+.dot { width: 6px; height: 6px; background: #8b5cf6; border-radius: 50%; }
+@media (max-width: 768px) { .hero h1 { font-size: 2rem; } .calc-row { grid-template-columns: 1fr; } .presets { grid-template-columns: 1fr; } }</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">GPU Cost <span>Calculator</span></div>
+  <div class="nav-links">
+    <a href="/gpu.html">Price Index</a>
+    <a href="https://agentdatasync.com/command" target="_blank">Command Center</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-badge">Free Tool — No Account Needed</div>
+  <h1>How Much to <span class="gold">Train Your AI?</span></h1>
+  <p>Calculate GPU training costs across providers. Find the cheapest option. Save 30-60% vs on-demand cloud.</p>
+</div>
+<div class="section">
+  <div class="section-title">Choose Your Model</div>
+  <div class="presets"><div class="preset" data-vram="24" data-gpus="1" data-hours="10"><div class="preset-name">Llama 3 8B (Fine-tune)</div><div class="preset-desc">Fine-tune Meta's Llama 3 8B</div><div class="preset-specs"><span>24GB</span><span>1 GPU</span><span>10h</span></div></div><div class="preset" data-vram="80" data-gpus="2" data-hours="50"><div class="preset-name">Llama 3 70B (Fine-tune)</div><div class="preset-desc">Fine-tune Meta's Llama 3 70B</div><div class="preset-specs"><span>80GB</span><span>2 GPUs</span><span>50h</span></div></div><div class="preset" data-vram="24" data-gpus="1" data-hours="20"><div class="preset-name">Stable Diffusion XL</div><div class="preset-desc">Train a custom SDXL model</div><div class="preset-specs"><span>24GB</span><span>1 GPU</span><span>20h</span></div></div><div class="preset" data-vram="16" data-gpus="1" data-hours="5"><div class="preset-name">GPT-2 Fine-tune</div><div class="preset-desc">Fine-tune GPT-2 on custom data</div><div class="preset-specs"><span>16GB</span><span>1 GPU</span><span>5h</span></div></div><div class="preset" data-vram="24" data-gpus="1" data-hours="10"><div class="preset-name">Custom Model</div><div class="preset-desc">Enter your own VRAM and hours</div><div class="preset-specs"><span>24GB</span><span>1 GPU</span><span>10h</span></div></div></div>
+  <div class="calc">
+    <div class="calc-row">
+      <div class="calc-group">
+        <div class="calc-label">VRAM Required (GB)</div>
+        <input type="number" class="calc-input" id="vram" value="24" min="1" max="200">
+      </div>
+      <div class="calc-group">
+        <div class="calc-label">Number of GPUs</div>
+        <input type="number" class="calc-input" id="gpus" value="1" min="1" max="8">
+      </div>
+      <div class="calc-group">
+        <div class="calc-label">Training Hours</div>
+        <input type="number" class="calc-input" id="hours" value="10" min="1" max="1000">
+      </div>
+    </div>
+    <div class="results-title">Estimated Costs by GPU</div>
+    <div class="gpu-grid" id="results"></div>
+  </div>
+</div>
+<div class="footer">
+  <p><span class="chip"><span class="dot"></span> powered by CATALYST</span></p>
+  <p style="margin-top:1rem;"><a href="https://agentdatasync.com">agentdatasync.com</a> · <a href="https://github.com/ypc-ux/gpu-broker">github</a></p>
+  <p style="margin-top:0.5rem;font-size:0.7rem;color:var(--gray);">Prices live from Vast.ai and RunPod. Costs are estimates.</p>
+</div>
+<script>
+const PRICES={"Tesla P100": 0.0135, "GTX 1660 S": 0.0222, "GTX 1080 Ti": 0.0289, "Quadro P2000": 0.0289, "RTX 3060": 0.0289, "Tesla V100": 0.0289, "L4": 0.0324, "GTX TITAN X": 0.0356, "RTX A2000": 0.0361, "Titan Xp": 0.0422, "GTX 1650": 0.0474, "GTX 1070": 0.0489, "RTX 3060 Ti": 0.0489, "GTX 1080": 0.0504, "GTX 1070 Ti": 0.0516, "RTX 2060": 0.0532, "Quadro P4000": 0.0544, "RTX 5060": 0.0554, "RTX 3080 Ti": 0.0556, "RTX 5060 Ti": 0.0585, "RTX 4060": 0.0591, "RTX 4070S Ti": 0.0689, "RTX 3060 laptop": 0.0696, "RTX A4500": 0.0748, "Tesla P40": 0.0815, "RTX 3070": 0.0837, "RTX 4070S": 0.0896, "RTX 2080 Ti": 0.0929, "RTX 2070": 0.0956, "RTX 4060 Ti": 0.0956, "RTX 3080": 0.0961, "RTX 5070": 0.1004, "A16": 0.1081, "RTX A5000": 0.16, "RTX A4000": 0.17, "RTX 4000 Ada SFF": 0.18, "RTX 4070 Ti": 0.19, "RTX 4000 Ada": 0.2, "RTX 3090": 0.22, "V100 SXM2": 0.23, "RTX 2000 Ada": 0.24, "RTX 3090 Ti": 0.27, "RTX 4080": 0.27, "RTX 4080 SUPER": 0.28, "RTX A6000": 0.33, "RTX 4090": 0.34, "RTX PRO 4500": 0.34, "A40": 0.35, "RTX 5080": 0.39, "RTX 5000 Ada": 0.49, "H200 NVL": 0.5, "MI300X": 0.5, "PRO 6000 MIG 24GB": 0.5, "RTX PRO 4000": 0.5, "RTX PRO 4500 SE": 0.5, "RTX PRO 6000 MaxQ": 0.5, "L40": 0.69, "RTX 5090": 0.69, "RTX 6000 Ada": 0.74, "L40S": 0.79, "RTX PRO 5000": 0.82, "A100 SXM 40GB": 1.0, "PRO 6000 MIG 48GB": 1.0, "A100 PCIe": 1.19, "A100 SXM": 1.39, "RTX PRO 6000": 1.69, "RTX PRO 6000 WK": 1.69, "H100 PCIe": 1.99, "H100 NVL": 2.59, "H100 SXM": 2.69, "H200 SXM": 3.59, "B200": 5.98, "B300": 6.94};
+document.querySelectorAll('.preset').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    document.getElementById('vram').value=c.dataset.vram;
+    document.getElementById('gpus').value=c.dataset.gpus;
+    document.getElementById('hours').value=c.dataset.hours;
+    calc();
+  });
+});
+['vram','gpus','hours'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+function calc(){
+  const v=parseInt(document.getElementById('vram').value)||0;
+  const g=parseInt(document.getElementById('gpus').value)||1;
+  const h=parseInt(document.getElementById('hours').value)||1;
+  const r=document.getElementById('results');
+  r.innerHTML='';
+  const gpus=Object.entries(PRICES).sort((a,b)=>a[1]-b[1]).slice(0,6);
+  const best=gpus[0]?gpus[0][1]:1;
+  gpus.forEach(([n,p])=>{
+    const t=p*h*g;
+    const s=((1-p/best)*100).toFixed(0);
+    const d=document.createElement('div');
+    d.className='gpu-card';
+    d.innerHTML=`<div class="gpu-name">${n}</div><div class="gpu-price">$${p.toFixed(2)}<span class="gpu-unit">/hr</span></div><div class="gpu-total">Total: $${t.toFixed(2)}</div><div class="gpu-best">${s>0?s+'% cheaper':'Cheapest'}</div>`;
+    r.appendChild(d);
+  });
+}
+calc();
+</script>
+</body>
+</html>
