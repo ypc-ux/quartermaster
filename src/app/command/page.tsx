@@ -21,6 +21,21 @@ export default function CommandCenter() {
   const [tab, setTab] = useState<"execute" | "chat">("execute");
   const [version] = useState(() => typeof window !== "undefined" && window.location.hostname.includes("green") ? "green" : "blue");
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [learnStep, setLearnStep] = useState(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("qb_learned")) return 4;
+    return 0;
+  });
+
+  const LEARN_STEPS = [
+    { cmd: "Give me 3 hooks for a GPU pricing tool", desc: "The hooks agent generates social hooks — provocation, curiosity, stat-driven.", tag: "Hooks" },
+    { cmd: "Research GPU cloud providers", desc: "The research agent scans competitors and trends using live search.", tag: "Research" },
+    { cmd: "Diagnose my marketing", desc: "The commander agent runs a 6-stage diagnostic on your marketing.", tag: "Commander" },
+  ];
+
+  function completeLearn() {
+    setLearnStep(4);
+    try { localStorage.setItem("qb_learned", "1"); } catch {}
+  }
 
   function showToast(msg: string) {
     setToastMsg(msg);
@@ -39,6 +54,9 @@ export default function CommandCenter() {
       if (!res.ok || (data.success === false && data.error)) setError(data.error || "Command failed");
       else {
         setResult(data);
+        // Auto-advance learn flow
+        if (learnStep >= 0 && learnStep < 3) setLearnStep(learnStep + 1);
+        else if (learnStep === 3) completeLearn();
         if (isShip) {
           showToast(`✓ Repo created → ${data.repo_url} (${data.files_created} files)`);
           // Also log to command history
@@ -74,6 +92,76 @@ export default function CommandCenter() {
         </div>
 
         {tab === "execute" ? (
+          learnStep < 4 ? (
+          /* ── Learn Flow (Twitter-style: teach concept by concept) ── */
+          <section style={{ background: "rgba(0,229,255,0.03)", border: "1px solid rgba(0,229,255,0.1)", borderRadius: 16, padding: "2rem" }}>
+            {learnStep === 0 ? (
+              /* Welcome */
+              <div style={{ textAlign: "center", padding: "2rem 0" }}>
+                <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>⚡</div>
+                <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#e2e8f0", marginBottom: "0.5rem" }}>This is the Command Center</h2>
+                <p style={{ color: "#94a3b8", fontSize: "0.95rem", maxWidth: 420, margin: "0 auto 2rem", lineHeight: 1.6 }}>22 agents, one input. Each one does something specific for your agency. Let's try 3 of them.</p>
+                <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+                  <button onClick={() => setLearnStep(1)} style={{ background: "#00e5ff", color: "#050810", border: "none", borderRadius: 10, padding: "0.8rem 2rem", fontSize: "0.95rem", fontWeight: 700, cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>Start Tutorial</button>
+                  <button onClick={completeLearn} style={{ background: "transparent", color: "#64748b", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "0.8rem 1.5rem", fontSize: "0.85rem", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>Skip</button>
+                </div>
+              </div>
+            ) : (
+              /* Steps 1-3 */
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    {[0,1,2].map(i => (
+                      <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: i < learnStep ? "#00ff88" : i === learnStep ? "#00e5ff" : "rgba(255,255,255,0.1)" }} />
+                    ))}
+                  </div>
+                  <button onClick={completeLearn} style={{ background: "transparent", border: "none", color: "#64748b", fontSize: "0.75rem", cursor: "pointer" }}>Skip tutorial</button>
+                </div>
+                {(() => {
+                  const step = LEARN_STEPS[learnStep - 1];
+                  return (
+                    <div>
+                      <div style={{ display: "inline-block", background: "rgba(0,229,255,0.1)", border: "1px solid rgba(0,229,255,0.2)", color: "#00e5ff", padding: "0.25rem 0.75rem", borderRadius: 100, fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "1rem" }}>Step {learnStep}/3 — {step.tag}</div>
+                      <p style={{ color: "#e2e8f0", fontSize: "1rem", marginBottom: "1.5rem", lineHeight: 1.6 }}>{step.desc}</p>
+                      <button
+                        onClick={() => { setCommand(step.cmd); handleExecute(step.cmd); }}
+                        disabled={loading}
+                        style={{ background: "rgba(0,229,255,0.08)", border: "1px solid rgba(0,229,255,0.25)", color: "#00e5ff", borderRadius: 10, padding: "0.75rem 1.5rem", fontSize: "0.9rem", fontWeight: 600, cursor: loading ? "wait" : "pointer", fontFamily: "'Inter', sans-serif", display: "flex", alignItems: "center", gap: "0.5rem" }}
+                      >
+                        {loading ? "Running…" : `Try: "${step.cmd}"`}
+                      </button>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+            {/* Result panel (shared between learn flow and normal UI) */}
+            {(result || error) && (
+              <div style={{ marginTop: "1.5rem", borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)", padding: "1.25rem" }}>
+                {error ? (
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#ef4444" }}><StatusDot status="error" /><p style={{ fontSize: "0.85rem" }}>{error}</p></div>
+                ) : result ? (
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <StatusDot status="running" />
+                        <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#e2e8f0" }}>{result.agent?.name?.replace(/_/g, " ")}</span>
+                        <span style={{ fontSize: "0.65rem", fontFamily: "monospace", textTransform: "uppercase", padding: "0.15rem 0.5rem", borderRadius: 100, background: "rgba(0,255,136,0.1)", color: "#00ff88" }}>complete</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", fontSize: "0.75rem", color: "#64748b" }}>
+                        <span style={{ padding: "0.15rem 0.5rem", borderRadius: 100, background: "rgba(201,162,39,0.1)", color: "#c9a227" }}>{result.agent?.points} pts</span>
+                        <span>{result.took_ms}ms</span>
+                        <button onClick={() => { navigator.clipboard.writeText(JSON.stringify(result.data, null, 2)); }} style={{ background: "transparent", border: "none", color: "#64748b", cursor: "pointer", fontSize: "0.75rem" }} title="Copy all">📋 Copy</button>
+                      </div>
+                    </div>
+                    <div><ResultRenderer data={result.data} agent={result.agent?.name || ""} /></div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </section>
+          ) : (
+          /* ── Normal Execute UI (after learn flow complete) ── */
         <section className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
           <div className="flex gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-amber-400 flex items-center justify-center shrink-0"><span className="text-navy font-bold text-lg">Q</span></div>
@@ -119,6 +207,7 @@ export default function CommandCenter() {
             </div>
           )}
         </section>
+          )
         ) : (
           <div className="h-[600px] rounded-2xl border border-white/5 bg-white/[0.02]"><ChatPanel onResult={(r) => setResult(r)} /></div>
         )}
