@@ -1,8 +1,10 @@
 /**
- * POST /api/audit — VoltageIndex lead capture + email notifications.
+ * POST /api/audit — VoltageIndex lead capture + auto-generated audit report + email notifications.
  * GET  /api/audit?deployed=1 — sends "page is live" notification to Julius.
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { generateAuditReport, type AuditLead } from '@/lib/gpu/audit-report';
+import { getPostHogServer } from '@/lib/posthog-server';
 
 const RESEND_URL = 'https://api.resend.com/emails';
 
@@ -41,26 +43,18 @@ export async function POST(req: NextRequest) {
     const gpuType = body.gpu_type || 'Not specified';
     const ts = new Date().toISOString();
 
-    // Confirmation email to the lead
-    await sendEmail(email, 'We got your GPU audit request \u26A1 VoltageIndex',
-      `<div style="font-family:Inter,Arial,sans-serif;background:#050810;color:#e2e8f0;padding:2rem;border-radius:12px;">
-        <h2 style="color:#00e5ff;margin-bottom:1rem;">Your GPU audit is on the way</h2>
-        <p style="color:#94a3b8;line-height:1.6;">We received your request. Here's what happens next:</p>
-        <ol style="color:#94a3b8;line-height:2;">
-          <li>We compare your setup against <strong style="color:#00e5ff;">152+ live GPU offers</strong></li>
-          <li>Every deal scored 1-10 (cheap, trusted, stable, fast, strong)</li>
-          <li>You get a report showing exactly where to save</li>
-        </ol>
-        <p style="color:#94a3b8;margin-top:1rem;">Expect your report within <strong style="color:#00ff88;">24 hours</strong>.</p>
-        <hr style="border:none;border-top:1px solid rgba(0,229,255,0.1);margin:1.5rem 0;">
-        <p style="color:#64748b;font-size:0.8rem;">VoltageIndex \u2014 We track GPU prices so you don't overpay.</p>
-      </div>`);
+    // Generate audit report (LLM + live data, template fallback)
+    const lead: AuditLead = { email, monthly_spend: body.monthly_spend, provider: body.provider, gpu_type: body.gpu_type };
+    const report = await generateAuditReport(lead);
 
-    // Notification email to Julius
+    // Send the actual report to the lead
+    await sendEmail(email, report.subject, report.html);
+
+    // Notification email to Julius with report details
     const digestEmail = process.env.DIGEST_EMAIL || 'youngprivatecapital@gmail.com';
     await sendEmail(digestEmail, `\u26A1 New GPU Audit Lead: ${email}`,
       `<div style="font-family:Inter,Arial,sans-serif;background:#050810;color:#e2e8f0;padding:2rem;border-radius:12px;">
-        <h2 style="color:#00e5ff;">New Audit Request</h2>
+        <h2 style="color:#00e5ff;">New Audit Request + Report Generated</h2>
         <table style="width:100%;border-collapse:collapse;margin-top:1rem;">
           <tr><td style="padding:0.5rem 1rem;color:#64748b;border-bottom:1px solid rgba(0,229,255,0.1);">Email</td>
               <td style="padding:0.5rem 1rem;color:#e2e8f0;border-bottom:1px solid rgba(0,229,255,0.1);">${email}</td></tr>
@@ -70,12 +64,33 @@ export async function POST(req: NextRequest) {
               <td style="padding:0.5rem 1rem;color:#e2e8f0;border-bottom:1px solid rgba(0,229,255,0.1);">${provider}</td></tr>
           <tr><td style="padding:0.5rem 1rem;color:#64748b;border-bottom:1px solid rgba(0,229,255,0.1);">GPU</td>
               <td style="padding:0.5rem 1rem;color:#e2e8f0;border-bottom:1px solid rgba(0,229,255,0.1);">${gpuType}</td></tr>
+          <tr><td style="padding:0.5rem 1rem;color:#64748b;border-bottom:1px solid rgba(0,229,255,0.1);">Report Source</td>
+              <td style="padding:0.5rem 1rem;color:#00ff88;border-bottom:1px solid rgba(0,229,255,0.1);">${report.source} ${report.model ? `(${report.model})` : ''} ${report.latency_ms ? `${report.latency_ms}ms` : ''}</td></tr>
           <tr><td style="padding:0.5rem 1rem;color:#64748b;">Time</td>
               <td style="padding:0.5rem 1rem;color:#e2e8f0;">${ts}</td></tr>
         </table>
+        <details style="margin-top:1rem;"><summary style="color:#00e5ff;cursor:pointer;font-size:0.85rem;">View report sent to lead</summary>
+          <div style="margin-top:0.5rem;padding:1rem;background:rgba(0,229,255,0.03);border-radius:8px;font-size:0.82rem;color:#94a3b8;white-space:pre-wrap;">${report.plain}</div>
+        </details>
       </div>`);
 
-    return NextResponse.json({ ok: true, message: 'Audit request received' });
+    // PostHog: track audit submission
+    const ph = getPostHogServer();
+    ph?.capture({
+      distinctId: 'voltageindex-audit',
+      event: 'audit_submitted',
+      properties: {
+        email,
+        provider: body.provider,
+        monthly_spend: body.monthly_spend,
+        gpu_type: body.gpu_type,
+        report_source: report.source,
+        report_model: report.model,
+        report_latency_ms: report.latency_ms,
+      },
+    });
+
+    return NextResponse.json({ ok: true, message: 'Audit request received', report_source: report.source });
   } catch {
     return NextResponse.json({ error: 'Failed to process' }, { status: 500 });
   }
