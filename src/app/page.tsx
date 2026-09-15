@@ -1,197 +1,159 @@
 "use client";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { useState } from "react";
 
-const fadeUp = { hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } };
-const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
-const GROUP_COLORS: Record<string, string> = { strategy: "#a855f7", content: "#10b981", ops: "#22d3ee" };
+interface Rec {
+  gpu: string; provider: string; pool: string; price_hr: number;
+  deal_score: number; score_label: string; vram_gb: number | null;
+  use_cases: string[]; why: string;
+}
 
-export default function LandingPage() {
+export default function HomePage() {
+  const [mode, setMode] = useState<"repo" | "text">("text");
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [recs, setRecs] = useState<Rec[] | null>(null);
+  const [taskType, setTaskType] = useState("");
+  const [error, setError] = useState("");
+
+  async function handleMatch() {
+    if (!input.trim()) return;
+    setLoading(true); setError(""); setRecs(null);
+    try {
+      const body = mode === "repo" ? { repo_url: input } : { description: input };
+      const res = await fetch("/api/match", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || "Something went wrong"); return; }
+      setRecs(data.recommendations || []);
+      setTaskType(data.task_type || "");
+    } catch { setError("Network error"); }
+    finally { setLoading(false); }
+  }
+
+  const sc = (s: number) => s >= 8 ? "#00ff88" : s >= 6 ? "#c9a227" : "#ef4444";
+
   return (
-    <main className="min-h-screen bg-navy text-white overflow-x-hidden">
-      {/* HERO */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-gold/5 via-transparent to-transparent pointer-events-none" />
-        <motion.div initial="hidden" animate="visible" variants={stagger} className="relative z-10 max-w-4xl mx-auto space-y-6">
-          <motion.p variants={fadeUp} className="text-gold text-xs uppercase tracking-[0.3em]">Agent Data Sync Presents</motion.p>
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-light leading-[0.95]" style={{ fontFamily: "Instrument Serif, serif" }}>
-            Stop wearing every hat.<br /><em className="text-gold not-italic">Start running your business.</em>
-          </motion.h1>
-          <motion.p variants={fadeUp} className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
-            The operating system that runs your agency without you. 19 connected agents. One command center. Zero shelf-ware.
-          </motion.p>
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 pt-4">
-            <Link href="/command" className="px-8 py-3.5 rounded-xl bg-gold text-navy font-semibold hover:bg-gold/90 transition text-lg">Enter the Command Center</Link>
-            <a href="#arsenal" className="px-8 py-3.5 rounded-xl border border-gold/40 text-gold font-medium hover:bg-gold/10 transition text-lg">See the Arsenal ↓</a>
-          </motion.div>
-        </motion.div>
-        <div className="absolute bottom-8 animate-bounce text-gold/50 text-2xl">↓</div>
-      </section>
-
-      {/* PROBLEM */}
-      <section className="py-28 px-6">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-3xl mx-auto space-y-8">
-          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>
-            You built the agency. <em className="text-gold not-italic">Now it runs you.</em>
-          </motion.h2>
-          <motion.ul variants={stagger} className="space-y-4">
-            {["You do sales, ops, content, finance, analytics — solo.", "Every new client means more hats, not more systems.", "Your competitors are shipping 3x faster with half the team.", "You don't need another tool. You need an operating system."].map((b, i) => (
-              <motion.li key={i} variants={fadeUp} className="flex gap-3 text-slate-300 text-lg"><span className="text-gold shrink-0 mt-1">→</span><span>{b}</span></motion.li>
-            ))}
-          </motion.ul>
-        </motion.div>
-      </section>
-{/* SOLUTION */}
-      <section className="py-28 px-6 bg-white/[0.01]">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-5xl mx-auto space-y-12">
-          <div className="text-center space-y-4">
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>One command. Every agent executes.</motion.h2>
-            <motion.p variants={fadeUp} className="text-slate-300 text-lg max-w-2xl mx-auto">QuarterBack runs 19 connected agents from a single command center. Research, content, launches, analytics, finance — all wired together.</motion.p>
-          </div>
-          <motion.div variants={stagger} className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { icon: "⚡", title: "Command Center", desc: "Type what you want built. Agents execute." },
-              { icon: "🎯", title: "Stunt Protocol", desc: "5-step PR engine: finds, generates, logs, pitches." },
-              { icon: "📊", title: "Ops Digest", desc: "One morning read. Everything that happened overnight." },
-              { icon: "💡", title: "Content Engine", desc: "1 idea → 6 platforms. Hooks, threads, blogs — auto." },
-            ].map((f, i) => (
-              <motion.div key={i} variants={fadeUp} className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 hover:border-gold/20 transition">
-                <div className="text-3xl mb-3">{f.icon}</div>
-                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-                <p className="text-sm text-slate-400">{f.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* ARSENAL */}
-      <section id="arsenal" className="py-28 px-6">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={stagger} className="max-w-6xl mx-auto space-y-10">
-          <div className="text-center space-y-3">
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>The Agent Arsenal</motion.h2>
-            <motion.p variants={fadeUp} className="text-slate-300 text-lg">19 connected agents. 315 challenge points. Zero shelf-ware.</motion.p>
-          </div>
-          <motion.div variants={stagger} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {[
-              { name: "Stunt Protocol", pts: 70, group: "strategy", desc: "5-step PR engine" },
-              { name: "Commander Frame", pts: 15, group: "strategy", desc: "6-stage diagnostic" },
-              { name: "Brainwash OS", pts: 15, group: "strategy", desc: "7-layer culture" },
-              { name: "Research", pts: 15, group: "strategy", desc: "Market scans" },
-              { name: "Trend Adapter", pts: 10, group: "strategy", desc: "Trends → brand" },
-              { name: "Launch Mode", pts: 15, group: "strategy", desc: "7-day plans" },
-              { name: "Twitter Agent", pts: 15, group: "content", desc: "10-50 tweets/day" },
-              { name: "Content Engine", pts: 15, group: "content", desc: "All channels" },
-              { name: "Brand Vault", pts: 15, group: "content", desc: "1 → 6 platforms" },
-              { name: "Hook Workroom", pts: 10, group: "content", desc: "20+ hooks" },
-              { name: "Batch Planner", pts: 10, group: "content", desc: "Batch days" },
-              { name: "Bio Optimizer", pts: 5, group: "content", desc: "Optimize bios" },
-              { name: "Grid Preview", pts: 5, group: "content", desc: "IG grid" },
-              { name: "Ops Digest", pts: 10, group: "ops", desc: "Daily briefing" },
-              { name: "Analytics", pts: 15, group: "ops", desc: "KPI tracking" },
-              { name: "Finance", pts: 10, group: "ops", desc: "Revenue/expenses" },
-              { name: "Collab Tracker", pts: 10, group: "ops", desc: "Partnerships" },
-              { name: "Community", pts: 10, group: "ops", desc: "Engagement" },
-              { name: "Sunday Reset", pts: 5, group: "ops", desc: "Weekly review" },
-            ].map((a, i) => (
-              <motion.div key={i} variants={fadeUp} className="rounded-xl border border-white/5 bg-white/[0.02] p-3 hover:border-gold/20 transition group">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <span className="w-2 h-2 rounded-full" style={{ background: GROUP_COLORS[a.group] }} />
-                  <span className="text-sm font-medium text-white truncate">{a.name}</span>
-                </div>
-                <p className="text-[11px] text-slate-500 mb-1">{a.desc}</p>
-                <span className="text-[10px] font-mono text-gold">{a.pts} pts</span>
-              </motion.div>
-            ))}
-          </motion.div>
-          <div className="text-center"><span className="inline-block px-6 py-2 rounded-full border border-gold/30 bg-gold/10 text-gold font-mono text-sm">Total: 315 points</span></div>
-        </motion.div>
-      </section>
-{/* BTS */}
-      <section className="py-28 px-6 bg-white/[0.01]">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-5xl mx-auto space-y-12">
-          <div className="text-center space-y-3">
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>The Marketing That Sells It</motion.h2>
-            <motion.p variants={fadeUp} className="text-slate-300 text-lg">Every move is public. The strategy, the stunts, the receipts.</motion.p>
-          </div>
-          <motion.div variants={stagger} className="grid md:grid-cols-4 gap-5">
-            {[
-              { step: "1", title: "Score", desc: "Paste any repo → instant rubric breakdown." },
-              { step: "2", title: "Stunt", desc: "40 campaign shapes → 20 ideas → artifacts." },
-              { step: "3", title: "Stack", desc: "Build connected agents. Each scores points." },
-              { step: "4", title: "Ship", desc: "Post the demo. Let the tool do the talking." },
-            ].map((s, i) => (
-              <motion.div key={i} variants={fadeUp} className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center">
-                <div className="text-2xl font-light text-gold mb-2" style={{ fontFamily: "Instrument Serif, serif" }}>{s.step}</div>
-                <h3 className="text-lg font-semibold mb-2">{s.title}</h3>
-                <p className="text-sm text-slate-400">{s.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-          <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {[
-              { label: "Repos Scored", value: "42" },
-              { label: "Testimonials", value: "3" },
-              { label: "Repos Visualized", value: "87" },
-              { label: "Challenge Points", value: "315" },
-            ].map((k, i) => (
-              <motion.div key={i} variants={fadeUp} className="rounded-xl border border-white/5 bg-white/[0.02] p-4 text-center">
-                <p className="text-2xl font-semibold text-gold" style={{ fontFamily: "Instrument Serif, serif" }}>{k.value}</p>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mt-1">{k.label}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </section>
-{/* PRICING */}
-      <section className="py-28 px-6">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-5xl mx-auto space-y-12">
-          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light text-center" style={{ fontFamily: "Instrument Serif, serif" }}>Choose your operating system</motion.h2>
-          <motion.div variants={stagger} className="grid md:grid-cols-3 gap-5">
-            {[
-              { name: "Solo", price: "$99", period: "/mo", features: ["1 user", "All 19 agents", "Command Center", "Whiteboard", "Ops Digest"], featured: false },
-              { name: "Agency", price: "$299", period: "/mo", features: ["5 users", "Everything in Solo", "Client dashboards", "Brand Vault", "Launch Mode"], featured: true },
-              { name: "Studio", price: "$999", period: "/mo", features: ["Unlimited users", "Everything in Agency", "White-label", "Priority support", "Custom agents"], featured: false },
-            ].map((tier, i) => (
-              <motion.div key={i} variants={fadeUp} className={`rounded-2xl border p-6 ${tier.featured ? "border-gold/50 bg-gold/5 ring-1 ring-gold/20" : "border-white/5 bg-white/[0.02]"}`}>
-                {tier.featured && <div className="text-xs text-gold uppercase tracking-wider mb-3 font-medium">Most popular</div>}
-                <h3 className="text-xl font-semibold mb-1">{tier.name}</h3>
-                <div className="flex items-baseline gap-1 mb-5">
-                  <span className="text-4xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>{tier.price}</span>
-                  <span className="text-slate-500 text-sm">{tier.period}</span>
-                </div>
-                <ul className="space-y-2.5 mb-6">
-                  {tier.features.map((f, j) => <li key={j} className="flex gap-2 text-sm text-slate-300"><span className="text-gold">✓</span>{f}</li>)}
-                </ul>
-                <button className={`w-full py-3 rounded-xl font-semibold transition ${tier.featured ? "bg-gold text-navy hover:bg-gold/90" : "border border-gold/40 text-gold hover:bg-gold/10"}`}>Start {tier.name}</button>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </section>
-{/* FINAL CTA */}
-      <section className="py-28 px-6 text-center">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger} className="max-w-3xl mx-auto space-y-6">
-          <motion.h2 variants={fadeUp} className="text-5xl md:text-6xl font-light" style={{ fontFamily: "Instrument Serif, serif" }}>
-            Your agency should run <em className="text-gold not-italic">without you.</em>
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-slate-300 text-lg">Type one command. Watch 19 agents execute.</motion.p>
-          <motion.div variants={fadeUp}>
-            <Link href="/command" className="inline-block px-10 py-4 rounded-xl bg-gold text-navy font-semibold text-lg hover:bg-gold/90 transition">Enter the Command Center →</Link>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-white/5 py-8 px-6 text-center text-xs text-slate-500 space-y-2">
-        <p>QuarterBack by Agent Data Sync</p>
-        <div className="flex items-center justify-center gap-4">
-          <a href="https://github.com/ypc-ux/quartermaster" className="hover:text-gold transition">GitHub</a>
-          <a href="/community" className="hover:text-gold transition">Community</a>
-          <a href="/whiteboard" className="hover:text-gold transition">Whiteboard</a>
-          <a href="/command" className="hover:text-gold transition">Command Center</a>
+    <div style={{ minHeight: "100vh", background: "#050810", color: "#e2e8f0", fontFamily: "'Inter', sans-serif" }}>
+      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(5,8,16,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(0,229,255,0.1)", padding: "0.8rem 2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ fontSize: "1.2rem", fontWeight: 800, color: "#00e5ff" }}>&#9889; GPU Trust</div>
+        <div style={{ display: "flex", gap: "1.5rem" }}>
+          <a href="/gpu.html" style={{ color: "#64748b", textDecoration: "none", fontSize: "0.85rem" }}>Live Prices</a>
+          <a href="/calculator.html" style={{ color: "#64748b", textDecoration: "none", fontSize: "0.85rem" }}>Calculator</a>
+          <a href="/audit.html" style={{ color: "#64748b", textDecoration: "none", fontSize: "0.85rem" }}>Free Audit</a>
+          <a href="/match" style={{ color: "#00e5ff", textDecoration: "none", fontSize: "0.85rem", fontWeight: 600 }}>Matchmaker</a>
         </div>
-      </footer>
-    </main>
+      </nav>
+
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "5rem 2rem 3rem", textAlign: "center" as const }}>
+        <div style={{ display: "inline-block", background: "rgba(0,229,255,0.1)", border: "1px solid rgba(0,229,255,0.2)", color: "#00e5ff", padding: "0.35rem 1rem", borderRadius: 100, fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: "1.5rem" }}>152 live offers &middot; 84 GPU models &middot; Free</div>
+        <h1 style={{ fontSize: "clamp(2.2rem,5vw,3.5rem)", fontWeight: 800, lineHeight: 1.08, marginBottom: "1rem" }}>
+          <span style={{ background: "linear-gradient(127deg,#00E5FF 0%,#A855F7 60%,#00FF88 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>GPU prices are broken.</span><br/><span style={{ color: "#e2e8f0" }}>We tell you the truth.</span>
+        </h1>
+        <p style={{ color: "#94a3b8", fontSize: "1.1rem", maxWidth: 520, margin: "0 auto 2.5rem", lineHeight: 1.6 }}>The same H100 costs $6/hr on AWS and $2/hr on RunPod. We track every price, score every deal, and tell you which GPU fits your project &mdash; for free.</p>
+
+        <div style={{ background: "rgba(0,229,255,0.03)", border: "1px solid rgba(0,229,255,0.15)", borderRadius: 16, padding: "1.5rem", maxWidth: 600, margin: "0 auto 2rem" }}>
+          <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", marginBottom: "1rem" }}>
+            {(["text","repo"] as const).map(m => (
+              <button key={m} onClick={() => { setMode(m); setInput(""); setRecs(null); }}
+                style={{ padding: "0.5rem 1rem", borderRadius: 10, border: mode===m?"1px solid rgba(0,229,255,0.4)":"1px solid rgba(255,255,255,0.1)", background: mode===m?"rgba(0,229,255,0.08)":"transparent", color: mode===m?"#00e5ff":"#64748b", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", fontFamily: "'Inter',sans-serif" }}>
+                {m==="text"?"Describe your project":"\uD83D\uDD17 Paste a repo"}
+              </button>
+            ))}
+          </div>
+          <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key==="Enter"&&handleMatch()}
+            placeholder={mode==="text"?"I'm fine-tuning a 7B model for customer support...":"https://github.com/owner/repo"}
+            style={{ width: "100%", background: "#0A0E1A", border: "1px solid rgba(0,229,255,0.15)", borderRadius: 12, padding: "0.9rem 1.25rem", color: "#e2e8f0", fontFamily: "'Inter',sans-serif", fontSize: "1rem", outline: "none" }} />
+          <button onClick={handleMatch} disabled={loading||!input.trim()}
+            style={{ marginTop: "0.75rem", width: "100%", background: "#00e5ff", color: "#050810", border: "none", borderRadius: 12, padding: "0.85rem", fontSize: "1rem", fontWeight: 700, cursor: loading?"wait":"pointer", fontFamily: "'Inter',sans-serif", opacity: (!input.trim()||loading)?0.5:1 }}>
+            {loading?"Finding your GPU\u2026":"Find My GPU \u2192"}
+          </button>
+          {error && <p style={{ color: "#ef4444", textAlign: "center", marginTop: "0.75rem", fontSize: "0.85rem" }}>{error}</p>}
+        </div>
+      </div>
+
+      {/* Results */}
+      {recs && recs.length > 0 && (
+        <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 2rem 2rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+            <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Workload: <span style={{ color: "#00e5ff", fontWeight: 600 }}>{taskType}</span></p>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: "1rem" }}>
+            {recs.map((r, i) => (
+              <div key={i} style={{ background: "rgba(0,229,255,0.03)", border: i===0?"1px solid rgba(0,229,255,0.3)":"1px solid rgba(0,229,255,0.1)", borderRadius: 14, padding: "1.25rem 1.5rem", position: "relative" as const }}>
+                {i===0 && <div style={{ position: "absolute", top: -9, left: 18, background: "#00e5ff", color: "#050810", padding: "0.15rem 0.65rem", borderRadius: 100, fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase" as const }}>Best Match</div>}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" as const, flexWrap: "wrap" as const, gap: "0.75rem" }}>
+                  <div>
+                    <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.2rem" }}>{r.gpu}</h3>
+                    <p style={{ color: "#64748b", fontSize: "0.78rem" }}>{r.provider.toUpperCase()} &middot; {r.pool} &middot; {r.vram_gb?`${r.vram_gb}GB`:"VRAM varies"}</p>
+                  </div>
+                  <div style={{ textAlign: "right" as const }}>
+                    <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#00e5ff" }}>${r.price_hr.toFixed(2)}<span style={{ fontSize: "0.8rem", color: "#64748b" }}>/hr</span></div>
+                    <div style={{ fontSize: "0.8rem", fontWeight: 700, color: sc(r.deal_score) }}>{r.deal_score}/10 {r.score_label}</div>
+                  </div>
+                </div>
+                <p style={{ color: "#94a3b8", fontSize: "0.82rem", marginTop: "0.5rem", marginBottom: "0.4rem" }}>{r.why}</p>
+                <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.3rem" }}>
+                  {r.use_cases.slice(0,3).map((uc,j) => (
+                    <span key={j} style={{ fontSize: "0.65rem", padding: "0.15rem 0.5rem", borderRadius: 100, background: "rgba(0,229,255,0.08)", color: "#00e5ff" }}>{uc}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: "center" as const, marginTop: "1.5rem" }}>
+            <a href="/audit.html" style={{ display: "inline-block", background: "#00e5ff", color: "#050810", padding: "0.7rem 2rem", borderRadius: 10, fontWeight: 700, textDecoration: "none" }}>Get a Free Audit \u2192</a>
+          </div>
+        </div>
+      )}
+
+      {/* Trust Stats */}
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "2rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: "1rem", marginBottom: "3rem" }}>
+          {[{v:"152",l:"Live Offers"},{v:"84",l:"GPU Models"},{v:"30-60%",l:"Avg Savings"},{v:"1-10",l:"Deal Scores"}].map((s,i) => (
+            <div key={i} style={{ background: "rgba(0,229,255,0.03)", border: "1px solid rgba(0,229,255,0.1)", borderRadius: 12, padding: "1rem", textAlign: "center" as const }}>
+              <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#00e5ff" }}>{s.v}</div>
+              <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "0.2rem" }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+        {/* Free Tools */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: "1rem", marginBottom: "3rem" }}>
+          {[
+            { icon: "\uD83D\uDCCA", title: "Live Price Index", desc: "Cheapest GPUs right now, scored 1-10", href: "/gpu.html" },
+            { icon: "\uD83E\uDDF0", title: "Cost Calculator", desc: "How much to train your AI model?", href: "/calculator.html" },
+            { icon: "\uD83D\uDD0D", title: "GPU Matchmaker", desc: "Describe your project, get GPU recs", href: "/match" },
+            { icon: "\uD83D\uDCE8", title: "Free Audit", desc: "We'll find where you're overpaying", href: "/audit.html" },
+          ].map((t,i) => (
+            <a key={i} href={t.href} style={{ background: "rgba(0,229,255,0.03)", border: "1px solid rgba(0,229,255,0.1)", borderRadius: 14, padding: "1.25rem", textDecoration: "none", color: "#e2e8f0" }}>
+              <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>{t.icon}</div>
+              <h3 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.3rem" }}>{t.title}</h3>
+              <p style={{ fontSize: "0.82rem", color: "#94a3b8", lineHeight: 1.4 }}>{t.desc}</p>
+            </a>
+          ))}
+        </div>
+
+        {/* How it works */}
+        <div style={{ background: "rgba(0,229,255,0.03)", border: "1px solid rgba(0,229,255,0.1)", borderRadius: 16, padding: "2rem", textAlign: "center" as const, marginBottom: "2rem" }}>
+          <h2 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#e2e8f0", marginBottom: "1.5rem" }}>How it works</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: "1.5rem" }}>
+            {[
+              { step: "1", title: "Describe", desc: "Paste a repo or tell us what you're building" },
+              { step: "2", title: "We match", desc: "We find the cheapest GPUs that fit your workload" },
+              { step: "3", title: "You save", desc: "Get a free audit and cut your bill 30-60%" },
+            ].map((s,i) => (
+              <div key={i}>
+                <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#00e5ff", marginBottom: "0.5rem" }}>{s.step}</div>
+                <h3 style={{ fontSize: "0.95rem", fontWeight: 600, color: "#e2e8f0", marginBottom: "0.3rem" }}>{s.title}</h3>
+                <p style={{ fontSize: "0.82rem", color: "#94a3b8", lineHeight: 1.4 }}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      {/* Footer */}
+      <div style={{ textAlign: "center" as const, padding: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <p style={{ fontSize: "0.78rem", color: "#64748b", marginBottom: "0.4rem" }}><span style={{ color: "#00ff88" }}>&#9679;</span> powered by VoltageIndex</p>
+        <p style={{ fontSize: "0.75rem", color: "#475569" }}>Prices live from Vast.ai and RunPod. Deal scores are deterministic, not vibes.</p>
+      </div>
+    </div>
   );
 }
