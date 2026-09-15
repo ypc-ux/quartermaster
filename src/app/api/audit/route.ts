@@ -5,6 +5,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateAuditReport, type AuditLead } from '@/lib/gpu/audit-report';
 import { getPostHogServer } from '@/lib/posthog-server';
+import { getSupabaseServer } from '@/lib/supabase-server';
 
 const RESEND_URL = 'https://api.resend.com/emails';
 
@@ -49,6 +50,23 @@ export async function POST(req: NextRequest) {
 
     // Send the actual report to the lead
     await sendEmail(email, report.subject, report.html);
+
+    // Persist the lead + report (best-effort — a DB hiccup must never block the lead's email)
+    try {
+      const supabase = getSupabaseServer();
+      if (supabase) {
+        await supabase.from('audit_leads').insert({
+          email,
+          monthly_spend: body.monthly_spend ?? null,
+          provider: body.provider ?? null,
+          gpu_type: body.gpu_type ?? null,
+          report_source: report.source,
+          report_text: report.plain,
+        });
+      }
+    } catch {
+      // swallow — lead persistence is not on the critical path
+    }
 
     // Notification email to Julius with report details
     const digestEmail = process.env.DIGEST_EMAIL || 'youngprivatecapital@gmail.com';

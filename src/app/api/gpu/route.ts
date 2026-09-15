@@ -7,6 +7,7 @@
 import { NextResponse } from 'next/server';
 import { fetchAllOffers } from '@/lib/gpu/providers';
 import { calculateDealScore, scoreToLabel, type ScoredOffer } from '@/lib/gpu/deal-score';
+import { getSupabaseServer } from '@/lib/supabase-server';
 
 // Cache entire response for 1 hour (Vercel ISR)
 export const revalidate = 3600;
@@ -39,15 +40,31 @@ export async function GET() {
       }
     }
 
+    const fullStats = {
+      ...stats,
+      total_scored: scored.length,
+      steal_count: scored.filter(o => o.deal_score >= 9).length,
+      good_count: scored.filter(o => o.deal_score >= 7 && o.deal_score < 9).length,
+    };
+
+    // Persist an hourly snapshot (best-effort — a DB hiccup must never break the live price feed)
+    try {
+      const supabase = getSupabaseServer();
+      if (supabase) {
+        await supabase.from('gpu_snapshots').insert({
+          offers_json: scored.slice(0, 80),
+          stats_json: fullStats,
+          source,
+        });
+      }
+    } catch {
+      // swallow — snapshot persistence is not on the critical path
+    }
+
     return NextResponse.json({
       offers: scored.slice(0, 80),        // top 80 deals (keeps payload reasonable)
       by_model: byModel,                  // cheapest per model (for calculator)
-      stats: {
-        ...stats,
-        total_scored: scored.length,
-        steal_count: scored.filter(o => o.deal_score >= 9).length,
-        good_count: scored.filter(o => o.deal_score >= 7 && o.deal_score < 9).length,
-      },
+      stats: fullStats,
       source,
     }, {
       headers: {
